@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="MapValidator.fs" />
+    <Compile Include="ConfigGenerator.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Confun.Core.Types\Confun.Core.Types.fsproj" />
+  </ItemGroup>
+
+</Project>

@@ -29,17 +29,23 @@ let installedSdk =
         })
 
 // Set general properties without arguments
+let inline compileWithProject projectPath = 
+    let projectOption = sprintf "--project %s" projectPath
+    DotNet.Options.lift installedSdk.Value
+     >> DotNet.Options.withCustomParams (Some projectOption)
+
+// Set general properties without arguments
 let inline compileWithoutArgs arg = 
     DotNet.Options.lift installedSdk.Value arg
 
 // Default target
 Target.create "Build" (fun _ ->
-  DotNet.exec compileWithoutArgs "build" "Confun.sln" |> ignore
+  DotNet.build compileWithoutArgs "Confun.sln"
 )
 
 //TODO with working dir
 Target.create "Run" (fun _ ->
-  DotNet.exec compileWithoutArgs "run" "src\.sln" |> ignore
+    DotNet.exec (compileWithProject @".\src\test\FirstSample\FirstSample.fsproj") "run" "" |> ignore
 )
 
 Target.create "Restore" (fun _ ->

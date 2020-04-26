@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\app\Confun.Core.Types\Confun.Core.Types.fsproj" />
+    <ProjectReference Include="..\..\app\Confun.Core.Api\Confun.Core.Api.fsproj" />
   </ItemGroup>
 
 </Project>
