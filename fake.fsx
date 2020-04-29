@@ -20,7 +20,6 @@ open Fake.Core.TargetOperators
 
 exception GenerationError of string
 
-let buildDir = "./build/"
 let dotnetSdkVersion = "3.1.101"
 
 // Lazily install DotNet SDK in the correct version if not available
@@ -44,6 +43,14 @@ Target.create "Run" (fun _ ->
 
 Target.create "Restore" (fun _ -> DotNet.restore compileWithoutArgs "Confun.sln")
 
-"Restore" ==> "Build"
+let artifactsTestsDir  = "./artifacts/tests/"
+
+Target.create "RunTests" (fun _ ->
+    DotNet.test compileWithoutArgs @".\src\test\Confun.UnitTests\Confun.UnitTests.fsproj"
+)
+
+"Restore" 
+    ==> "Build"
+    ==> "RunTests"
 // start build
-Target.runOrDefault "Build"
+Target.runOrDefault "RunTests"

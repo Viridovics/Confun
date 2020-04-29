@@ -22,3 +22,6 @@ module ValidationError =
             (unwrap
              >> (sprintf "%s. %s" prefix)
              >> ValidationError)
+
+module ValidatedConfunMap =
+    let unwrap (ValidatedConfunMap configMap) = configMap
