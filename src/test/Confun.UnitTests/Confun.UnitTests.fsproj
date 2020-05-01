@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="UnitTests.fs" />
+    <Compile Include="ConfigOptionsValidationTests.fs" />
     <Compile Include="MapValidationTests.fs" />
   </ItemGroup>
 

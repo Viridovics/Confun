@@ -190,3 +190,4 @@ docs/content/release-notes.md
 .fake
 .ionide
 *.lock
+.vs

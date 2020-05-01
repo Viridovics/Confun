@@ -2,13 +2,14 @@
 
 open Confun.Core.Types
 open Confun.Core.Processing
-exception GenerationError of string
+
 let m:ConfunMap = [
             "SrcPort", Port 10us
             "DistPort", Port 8080us
             "DatabaseConnection", Group [
                 "ConnectionString", Str "ms-sql.localhost:9090"
                 "ConnectionString2", Str "ms-sql.localhost:9090"
+                "ConnectionString3", Str "ms-sql.localhost:9090"
             ]
         ]
 
@@ -16,7 +17,7 @@ let m:ConfunMap = [
 let main argv =
     let res = MapValidator.validate m
     match res with
-    | Error error -> 
+    | Error error ->
                     printf "%s" (ConfigGenerator.printErrors error)
                     1
     | Ok validatedResult -> 
