@@ -14,6 +14,16 @@ module MapValidator =
                 |> Ok
             | Invalid errorList -> Error(ValidationError.addPrefixToErrors "Error in-root of config map" errorList)
 
+    let private namesEmptinessValidationStep: MapValidationStep =
+        fun configMap ->
+            let validationResult = ConfigOptionsValidation.validateOptionNamesForEmptiness configMap
+            match validationResult with
+            | Valid ->
+                configMap
+                |> ValidatedConfunMap
+                |> Ok
+            | Invalid errorList -> Error(ValidationError.addPrefixToErrors "Error in-root of config map" errorList)
+
     let private configOptionsValidationStep (optionValidationSteps: ConfigOptionValidationStep list): MapValidationStep =
         fun configMap ->
             let optionValidation =
@@ -42,10 +52,12 @@ module MapValidator =
             if List.isEmpty errorsList then Ok(ValidatedConfunMap configMap) else Error errorsList
 
     let validate configMap: MapValidationResult =
-        let optionConfigValidationSteps = [ ConfigOptionsValidation.validateNamesUniquenesInGroupOptionStep ]
+        let optionConfigValidationSteps = [ ConfigOptionsValidation.validateNamesUniquenesInGroupOptionStep;
+                                            ConfigOptionsValidation.validateNamesEmptinessInGroupOptionStep ]
 
         let errorResults =
             [ namesUniquenessValidationStep
+              namesEmptinessValidationStep
               (configOptionsValidationStep optionConfigValidationSteps) ]
             |> List.collect
                 ((fun step -> step configMap)

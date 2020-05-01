@@ -49,3 +49,25 @@ module MapValidationTests =
                     "NameNormal", Str "42"
                     "RepeatingName", Port 90us ] ]
         configMap |> haveErrorsCount 1
+
+    [<Fact>]
+    let ``Config with empty name option in group is invalid``() =
+        let configMap =
+            [ "RepeatingName", Port 10us
+              "Group",
+              Group
+                  [ "Name1", Str "43"
+                    "Name2", Str "42"
+                    "", Port 90us ] ]
+        configMap |> haveErrorsCount 1
+
+    [<Fact>]
+    let ``Config with empty name option in root is invalid``() =
+        let configMap =
+            [ "\t", Port 10us
+              "RepeatingName", Port 10us
+              "  ",
+              Group
+                  [ "Name1", Str "43"
+                    "Name2", Str "42"]]
+        configMap |> haveErrorsCount 2

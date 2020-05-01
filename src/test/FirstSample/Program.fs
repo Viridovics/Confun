@@ -5,10 +5,10 @@ open Confun.Core.Processing
 
 let m:ConfunMap = [
             "SrcPort", Port 10us
-            "DistPort", Port 8080us
+            "", Port 8080us
             "DatabaseConnection", Group [
                 "ConnectionString", Str "ms-sql.localhost:9090"
-                "ConnectionString2", Str "ms-sql.localhost:9090"
+                "", Str "ms-sql.localhost:9090"
                 "ConnectionString3", Str "ms-sql.localhost:9090"
             ]
         ]
