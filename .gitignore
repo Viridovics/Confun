@@ -191,3 +191,4 @@ docs/content/release-notes.md
 .ionide
 *.lock
 .vs
+coverage.opencover.xml

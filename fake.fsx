@@ -30,6 +30,10 @@ let inline compileWithProject projectPath =
     let projectOption = sprintf "--project %s" projectPath
     DotNet.Options.lift installedSdk.Value >> DotNet.Options.withCustomParams (Some projectOption)
 
+let inline runTestWithCollectCoverage arg =
+    let collectCoverageOption = "/p:CollectCoverage=true /p:CoverletOutputFormat=opencover"
+    (DotNet.Options.lift installedSdk.Value >> DotNet.Options.withCustomParams (Some collectCoverageOption)) arg
+
 // Set general properties without arguments
 let inline compileWithoutArgs arg = DotNet.Options.lift installedSdk.Value arg
 
@@ -46,7 +50,11 @@ Target.create "Restore" (fun _ -> DotNet.restore compileWithoutArgs "Confun.sln"
 let artifactsTestsDir  = "./artifacts/tests/"
 
 Target.create "RunTests" (fun _ ->
-    DotNet.test compileWithoutArgs @".\src\test\Confun.UnitTests\Confun.UnitTests.fsproj"
+    DotNet.test runTestWithCollectCoverage @".\src\test\Confun.UnitTests\Confun.UnitTests.fsproj"
+)
+
+Target.create "OnlyTests" (fun _ ->
+    DotNet.test runTestWithCollectCoverage @".\src\test\Confun.UnitTests\Confun.UnitTests.fsproj"
 )
 
 "Restore" 
@@ -54,3 +62,8 @@ Target.create "RunTests" (fun _ ->
     ==> "RunTests"
 // start build
 Target.runOrDefault "RunTests"
+
+// for tests 
+// dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+// dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.5.6
+// reportgenerator -reports:coverage.opencover.xml -targetdir:"genReport"
