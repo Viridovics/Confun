@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Confun.Core.Processing\Confun.Core.Processing.fsproj" />
+    <ProjectReference Include="..\Confun.Core.Types\Confun.Core.Types.fsproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="JsonGenerator.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+</Project>

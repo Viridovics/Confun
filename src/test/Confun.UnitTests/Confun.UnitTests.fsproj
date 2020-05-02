@@ -8,6 +8,7 @@
     <Compile Include="UnitTests.fs" />
     <Compile Include="ConfigOptionsValidationTests.fs" />
     <Compile Include="MapValidationTests.fs" />
+    <Compile Include="Generators/NewtonsoftJsonGeneratorTests.fs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +17,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
     <PackageReference Include="FsUnit" Version="3.8.1" />
@@ -24,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\app\Confun.Core.Types\Confun.Core.Types.fsproj" />
     <ProjectReference Include="..\..\app\Confun.Core.Processing\Confun.Core.Processing.fsproj" />
+    <ProjectReference Include="..\..\app\Confun.Generator.NewtonsoftJson\Confun.Generator.NewtonsoftJson.fsproj" />
   </ItemGroup>
 
 </Project>
