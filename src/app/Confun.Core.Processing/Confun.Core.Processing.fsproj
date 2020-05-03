@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <Compile Include="Api\Types.fs" />
-    <Compile Include="ConfigOptionsValidation.fs" />
+    <Compile Include="ConfigParamsValidation.fs" />
     <Compile Include="MapValidator.fs" />
     <Compile Include="ConfigGenerator.fs" />
   </ItemGroup>

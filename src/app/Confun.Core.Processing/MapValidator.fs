@@ -6,7 +6,7 @@ open Confun.Core.Types
 module MapValidator =
     let private namesUniquenessValidationStep: MapValidationStep =
         fun configMap ->
-            let validationResult = ConfigOptionsValidation.validateOptionNamesUniquenesInList configMap
+            let validationResult = ConfigParamsValidation.validateOptionNamesUniquenesInList configMap
             match validationResult with
             | Valid ->
                 configMap
@@ -16,7 +16,7 @@ module MapValidator =
 
     let private namesEmptinessValidationStep: MapValidationStep =
         fun configMap ->
-            let validationResult = ConfigOptionsValidation.validateOptionNamesForEmptiness configMap
+            let validationResult = ConfigParamsValidation.validateOptionNamesForEmptiness configMap
             match validationResult with
             | Valid ->
                 configMap
@@ -24,45 +24,45 @@ module MapValidator =
                 |> Ok
             | Invalid errorList -> Error(ValidationError.addPrefixToErrors "Error in-root of config map" errorList)
 
-    let private configOptionsValidationStep (optionValidationSteps: ConfigOptionValidationStep list): MapValidationStep =
+    let private configParamsValidationStep (optionValidationSteps: ConfigParamValidationStep list): MapValidationStep =
         fun configMap ->
             let optionValidation =
-                fun configOption ->
+                fun configParam ->
                     optionValidationSteps
                     |> Seq.collect
-                        ((fun step -> step configOption)
+                        ((fun step -> step configParam)
                          >> (function
                          | Valid -> []
                          | Invalid errorList -> errorList))
 
-            let rec configOptionsValidation (configOptions: Dict) =
+            let rec configParamsValidation (configParams: Dict) =
                 let descendatErrors =
-                    configOptions
+                    configParams
                     |> Seq.collect
                         ((function
-                        | _, Group groupOptions -> configOptionsValidation groupOptions
+                        | _, Group groupOptions -> configParamsValidation groupOptions
                         | arrayName, Array arr -> arr 
                                                     |> Array.mapi (fun index value -> ((sprintf "%s.[%d]" arrayName index)), value) 
                                                     |> Array.toList 
-                                                    |> configOptionsValidation
+                                                    |> configParamsValidation
                         | _ -> []))
 
-                let innerErrors = configOptions |> Seq.collect optionValidation
+                let innerErrors = configParams |> Seq.collect optionValidation
                 [ innerErrors; descendatErrors ]
                 |> Seq.concat
                 |> Seq.toList
 
-            let errorsList = configOptionsValidation configMap
+            let errorsList = configParamsValidation configMap
             if List.isEmpty errorsList then Ok(ValidatedConfunMap configMap) else Error errorsList
 
     let validate configMap: MapValidationResult =
-        let optionConfigValidationSteps = [ ConfigOptionsValidation.validateNamesUniquenesInGroupOptionStep;
-                                            ConfigOptionsValidation.validateNamesEmptinessInGroupOptionStep ]
+        let optionConfigValidationSteps = [ ConfigParamsValidation.validateNamesUniquenesInGroupOptionStep;
+                                            ConfigParamsValidation.validateNamesEmptinessInGroupOptionStep ]
 
         let errorResults =
             [ namesUniquenessValidationStep
               namesEmptinessValidationStep
-              (configOptionsValidationStep optionConfigValidationSteps) ]
+              (configParamsValidationStep optionConfigValidationSteps) ]
             |> List.collect
                 ((fun step -> step configMap)
                  >> (function

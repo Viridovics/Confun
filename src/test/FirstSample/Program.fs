@@ -12,11 +12,16 @@ let m:ConfunMap = [
                 "Str2", Str "ms-sql.localhost:9090"
                 "ConnectionString3", Str "ms-sql.localhost:9090"
             ]
-            "GroupArray", Array
-                [| Group [
+            "GroupArray", Array [| 
+                Group [
                     "RepeatingName", Port 10us
-                    "NoRepeatingName", Port 10us]
-                |]
+                    "NoRepeatingName", Port 10us
+                ]
+                Group [
+                    "RepeatingName", Port 10us
+                    "NoRepeatingName", Port 10us
+                ]
+            |]
         ]
 
 [<EntryPoint>]
@@ -28,4 +33,7 @@ let main argv =
                     1
     | Ok validatedResult -> 
                     printf "%s" (JsonGenerator.generator validatedResult)
+                    ConfigGenerator.generateConfig
+                        { Name = "1.json"; DirectoryPath = "."; ParamsMap = validatedResult }
+                        JsonGenerator.generator |> printf "%A"
                     0

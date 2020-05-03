@@ -2,9 +2,9 @@
 
 type ConfunMap = Dict
 
-and Dict = ConfigOption list
+and Dict = ConfigParam list
 
-and ConfigOption = string * ConfigValue
+and ConfigParam = string * ConfigValue
 
 and ConfigValue =
     | Port of uint16
@@ -15,6 +15,13 @@ and ConfigValue =
 type ValidationError = ValidationError of string
 
 type ValidatedConfunMap = ValidatedConfunMap of ConfunMap
+
+type ConfigFile =
+    {
+        Name: string
+        DirectoryPath: string
+        ParamsMap: ValidatedConfunMap
+    }
 
 module ValidationError =
     let unwrap (ValidationError error) = error

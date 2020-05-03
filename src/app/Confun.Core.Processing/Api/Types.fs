@@ -12,6 +12,6 @@ type OptionValidationResult = ValidationResult<ValidationError list>
 
 type MapValidationStep = ConfunMap -> MapValidationResult
 
-type ConfigOptionValidationStep = ConfigOption -> OptionValidationResult
+type ConfigParamValidationStep = ConfigParam -> OptionValidationResult
 
-type ConfigGenerator = ValidatedConfunMap -> string
+type ConfigMapGenerator = ValidatedConfunMap -> string

@@ -5,10 +5,10 @@ open System;
 open Confun.Core.Processing.Api
 open Confun.Core.Types
 
-module ConfigOptionsValidation =
-    let internal validateOptionNamesUniquenesInList (configOptions: ConfigOption list): ValidationResult<ValidationError list> =
+module ConfigParamsValidation =
+    let internal validateOptionNamesUniquenesInList (configParams: ConfigParam list): ValidationResult<ValidationError list> =
         let duplicatesOptionsNames =
-            configOptions
+            configParams
             |> List.map (function
                 | name, _ -> name)
             |> List.groupBy id
@@ -22,9 +22,9 @@ module ConfigOptionsValidation =
 
         if List.isEmpty validationErrorList then Valid else Invalid validationErrorList
 
-    let internal validateOptionNamesForEmptiness (configOptions: ConfigOption list): ValidationResult<ValidationError list> =
+    let internal validateOptionNamesForEmptiness (configParams: ConfigParam list): ValidationResult<ValidationError list> =
         let optionsWithEmptyName =
-            configOptions
+            configParams
             |> List.filter (fun (optionName, _) -> String.IsNullOrWhiteSpace optionName )
 
         let validationErrorList =
@@ -34,7 +34,7 @@ module ConfigOptionsValidation =
 
         if List.isEmpty validationErrorList then Valid else Invalid validationErrorList
 
-    let validateNamesUniquenesInGroupOptionStep: ConfigOptionValidationStep =
+    let validateNamesUniquenesInGroupOptionStep: ConfigParamValidationStep =
         function
         | name, Group group ->
             let validationResult = validateOptionNamesUniquenesInList group
@@ -44,7 +44,7 @@ module ConfigOptionsValidation =
                 Invalid(ValidationError.addPrefixToErrors (sprintf "Error in group: '%s'" name) errorList)
         | _ -> Valid
 
-    let validateNamesEmptinessInGroupOptionStep: ConfigOptionValidationStep =
+    let validateNamesEmptinessInGroupOptionStep: ConfigParamValidationStep =
         function
         | name, Group group ->
             let validationResult = validateOptionNamesForEmptiness group

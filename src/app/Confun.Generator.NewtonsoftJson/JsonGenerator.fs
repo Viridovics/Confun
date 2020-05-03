@@ -2,32 +2,34 @@
 
 open System.Collections.Generic
 
-open Newtonsoft.Json;
+open Newtonsoft.Json
 
 open Confun.Core.Processing.Api
 open Confun.Core.Types
 
 module JsonGenerator =
-    let rec private representConfigOptionAsSiimpleType: (ConfigValue -> obj) = 
+    let rec private representConfigParamAsSiimpleType: ConfigValue -> obj =
         fun configValue ->
             let toSystemDictionary dictionary =
                 let configDictionary = new Dictionary<string, obj>()
-                dictionary |> List.iter (fun (configName, configValue) -> configDictionary.Add(configName, representConfigOptionAsSiimpleType configValue))
+                dictionary
+                |> List.iter (fun (configName, configValue) ->
+                    configDictionary.Add(configName, representConfigParamAsSiimpleType configValue))
                 configDictionary
 
             match configValue with
             | Port port -> port :> obj
             | Str str -> str :> obj
             | Array arr ->
-                arr |> Seq.map representConfigOptionAsSiimpleType |> Seq.toArray :> obj
-            | Group group ->
-                group |> toSystemDictionary :> obj
+                arr
+                |> Seq.map representConfigParamAsSiimpleType
+                |> Seq.toArray :> obj
+            | Group group -> group |> toSystemDictionary :> obj
 
-    let generator : ConfigGenerator =
+    let generator: ConfigMapGenerator =
         fun (ValidatedConfunMap confunMap) ->
             let configDictionary = new Dictionary<string, obj>()
-            confunMap  |> List.iter (fun (configName, configValue) -> configDictionary.Add(configName, representConfigOptionAsSiimpleType configValue))
+            confunMap
+            |> List.iter (fun (configName, configValue) ->
+                configDictionary.Add(configName, representConfigParamAsSiimpleType configValue))
             JsonConvert.SerializeObject(configDictionary, Formatting.Indented)
-
-
-

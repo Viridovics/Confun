@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <Compile Include="UnitTests.fs" />
-    <Compile Include="ConfigOptionsValidationTests.fs" />
+    <Compile Include="ConfigParamsValidationTests.fs" />
     <Compile Include="MapValidationTests.fs" />
     <Compile Include="Generators/NewtonsoftJsonGeneratorTests.fs" />
   </ItemGroup>
