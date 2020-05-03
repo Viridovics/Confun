@@ -8,13 +8,20 @@ open Confun.Core.Processing.Api
 open Confun.Core.Types
 
 module JsonGenerator =
-    let rec private representConfigOptionAsSiimpleType: (ConfigValue -> obj) = function
-        | Port port -> port :> obj
-        | Str str -> str :> obj
-        | Group group ->
-            let configDictionary = new Dictionary<string, obj>()
-            group |> List.iter (fun (configName, configValue) -> configDictionary.Add(configName, representConfigOptionAsSiimpleType configValue))
-            configDictionary :> obj
+    let rec private representConfigOptionAsSiimpleType: (ConfigValue -> obj) = 
+        fun configValue ->
+            let toSystemDictionary dictionary =
+                let configDictionary = new Dictionary<string, obj>()
+                dictionary |> List.iter (fun (configName, configValue) -> configDictionary.Add(configName, representConfigOptionAsSiimpleType configValue))
+                configDictionary
+
+            match configValue with
+            | Port port -> port :> obj
+            | Str str -> str :> obj
+            | Array arr ->
+                arr |> Seq.map representConfigOptionAsSiimpleType |> Seq.toArray :> obj
+            | Group group ->
+                group |> toSystemDictionary :> obj
 
     let generator : ConfigGenerator =
         fun (ValidatedConfunMap confunMap) ->

@@ -35,12 +35,16 @@ module MapValidator =
                          | Valid -> []
                          | Invalid errorList -> errorList))
 
-            let rec configOptionsValidation (configOptions: ConfigOption list) =
+            let rec configOptionsValidation (configOptions: Dict) =
                 let descendatErrors =
                     configOptions
                     |> Seq.collect
                         ((function
                         | _, Group groupOptions -> configOptionsValidation groupOptions
+                        | arrayName, Array arr -> arr 
+                                                    |> Array.mapi (fun index value -> ((sprintf "%s.[%d]" arrayName index)), value) 
+                                                    |> Array.toList 
+                                                    |> configOptionsValidation
                         | _ -> []))
 
                 let innerErrors = configOptions |> Seq.collect optionValidation

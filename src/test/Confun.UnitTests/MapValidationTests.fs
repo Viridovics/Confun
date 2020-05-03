@@ -71,3 +71,16 @@ module MapValidationTests =
                   [ "Name1", Str "43"
                     "Name2", Str "42"]]
         configMap |> haveErrorsCount 2
+
+    [<Fact>]
+    let ``Config with empty name option in group in array is invalid``() =
+        let configMap =
+            [ 
+              "Port", Port 10us
+              "GroupArray", Array
+                  [| Group [
+                      "RepeatingName", Port 10us
+                      "RepeatingName", Port 10us]
+                  |]
+            ]
+        configMap |> haveErrorsCount 1

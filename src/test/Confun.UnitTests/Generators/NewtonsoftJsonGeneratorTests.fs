@@ -22,6 +22,7 @@ module NewtonsoftJsonGeneratorTests =
                 "Port", Port 10us
                 "String", Str "qwerty"
             ]
+            "SystemPorts", Array [| Port 40us; Port 80us; Port 8080us |]
         ]
 
         let configDictionary = validatedConfunMap 
@@ -30,6 +31,7 @@ module NewtonsoftJsonGeneratorTests =
 
         configDictionary.Item("Port") |> should equal 10
         configDictionary.Item("String") |> should equal "qwerty"
+        (configDictionary.Item("SystemPorts") :?> JArray).ToObject<int array>() |> should equivalent [| 40; 80; 8080 |]
 
         let group = (configDictionary.Item("DatabaseConnection") :?> JObject).ToObject<Dictionary<string, obj>>()
         group.Item("Port") |> should equal 10

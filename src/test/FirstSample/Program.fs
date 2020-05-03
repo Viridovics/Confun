@@ -12,6 +12,11 @@ let m:ConfunMap = [
                 "Str2", Str "ms-sql.localhost:9090"
                 "ConnectionString3", Str "ms-sql.localhost:9090"
             ]
+            "GroupArray", Array
+                [| Group [
+                    "RepeatingName", Port 10us
+                    "NoRepeatingName", Port 10us]
+                |]
         ]
 
 [<EntryPoint>]

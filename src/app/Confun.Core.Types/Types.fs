@@ -1,13 +1,16 @@
 ﻿namespace Confun.Core.Types
 
-type ConfunMap = ConfigOption list
+type ConfunMap = Dict
+
+and Dict = ConfigOption list
 
 and ConfigOption = string * ConfigValue
 
 and ConfigValue =
     | Port of uint16
     | Str of string
-    | Group of ConfunMap
+    | Group of Dict
+    | Array of ConfigValue array
 
 type ValidationError = ValidationError of string
 
