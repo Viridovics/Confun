@@ -17,7 +17,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Confun.UnitTests", "src\tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generators", "Generators", "{FF67AB47-49B2-413A-AA09-3A99E71B6170}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Confun.Generator.NewtonsoftJson", "src\app\Confun.Generator.NewtonsoftJson\Confun.Generator.NewtonsoftJson.fsproj", "{18F07112-5C47-4FFE-A9E7-37CE46C6633F}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Confun.Generator.Json", "src\app\Confun.Generator.Json\Confun.Generator.Json.fsproj", "{18F07112-5C47-4FFE-A9E7-37CE46C6633F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

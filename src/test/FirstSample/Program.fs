@@ -2,7 +2,7 @@
 
 open Confun.Core.Types
 open Confun.Core.Processing
-open Confun.Generator.NewtonsoftJson
+open Confun.Generator.Json
 
 let m:ConfunMap = [
             "SrcPort", Port 10us

@@ -6,10 +6,10 @@ open Xunit
 open FsUnit
 
 open Newtonsoft.Json
+open Newtonsoft.Json.Linq
 
 open Confun.Core.Types
-open Confun.Generator.NewtonsoftJson
-open Newtonsoft.Json.Linq
+open Confun.Generator.Json
 
 
 module NewtonsoftJsonGeneratorTests =

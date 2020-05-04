@@ -1,4 +1,4 @@
-﻿namespace Confun.Generator.NewtonsoftJson
+﻿namespace Confun.Generator.Json
 
 open System.Collections.Generic
 

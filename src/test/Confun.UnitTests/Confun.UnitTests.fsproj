@@ -8,7 +8,7 @@
     <Compile Include="UnitTests.fs" />
     <Compile Include="ConfigParamsValidationTests.fs" />
     <Compile Include="MapValidationTests.fs" />
-    <Compile Include="Generators/NewtonsoftJsonGeneratorTests.fs" />
+    <Compile Include="Generators/JsonGeneratorTests.fs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,7 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\app\Confun.Core.Types\Confun.Core.Types.fsproj" />
     <ProjectReference Include="..\..\app\Confun.Core.Processing\Confun.Core.Processing.fsproj" />
-    <ProjectReference Include="..\..\app\Confun.Generator.NewtonsoftJson\Confun.Generator.NewtonsoftJson.fsproj" />
+    <ProjectReference Include="..\..\app\Confun.Generator.Json\Confun.Generator.Json.fsproj" />
   </ItemGroup>
 
 </Project>

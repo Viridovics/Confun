@@ -12,7 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\app\Confun.Core.Types\Confun.Core.Types.fsproj" />
     <ProjectReference Include="..\..\app\Confun.Core.Processing\Confun.Core.Processing.fsproj" />
-    <ProjectReference Include="..\..\app\Confun.Generator.NewtonsoftJson\Confun.Generator.NewtonsoftJson.fsproj" />
+    <ProjectReference Include="..\..\app\Confun.Generator.Json\Confun.Generator.Json.fsproj" />
   </ItemGroup>
 
 </Project>
