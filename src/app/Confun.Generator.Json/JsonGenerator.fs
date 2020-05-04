@@ -18,6 +18,8 @@ module JsonGenerator =
                 configDictionary
 
             match configValue with
+            | Int i -> i :> obj
+            | Float f -> f :> obj
             | Port port -> port :> obj
             | Str str -> str :> obj
             | Array arr ->

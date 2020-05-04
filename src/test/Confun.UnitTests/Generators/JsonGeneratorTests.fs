@@ -16,6 +16,8 @@ module NewtonsoftJsonGeneratorTests =
     [<Fact>]
     let ``Generate valid config to json by NewtonsoftJsonGenerator``() =
         let validatedConfunMap = ValidatedConfunMap [
+            "IntValue", Int 100
+            "FloatValue", Float 20.0
             "Port", Port 10us
             "String", Str "qwerty"
             "DatabaseConnection", Group [
@@ -29,6 +31,8 @@ module NewtonsoftJsonGeneratorTests =
                                     |> JsonGenerator.generator
                                     |> JsonConvert.DeserializeObject<Dictionary<string, obj>>
 
+        configDictionary.Item("IntValue") |> should equal 100
+        configDictionary.Item("FloatValue") |> should equal 20.0
         configDictionary.Item("Port") |> should equal 10
         configDictionary.Item("String") |> should equal "qwerty"
         (configDictionary.Item("SystemPorts") :?> JArray).ToObject<int array>() |> should equivalent [| 40; 80; 8080 |]

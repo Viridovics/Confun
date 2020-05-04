@@ -7,6 +7,8 @@ and Dict = ConfigParam list
 and ConfigParam = string * ConfigValue
 
 and ConfigValue =
+    | Int of int32
+    | Float of float
     | Port of uint16
     | Str of string
     | Group of Dict
@@ -22,6 +24,8 @@ type ConfigFile =
         DirectoryPath: string
         ParamsMap: ValidatedConfunMap
     }
+
+
 
 module ValidationError =
     let unwrap (ValidationError error) = error

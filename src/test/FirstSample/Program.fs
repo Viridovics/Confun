@@ -5,6 +5,7 @@ open Confun.Core.Processing
 open Confun.Generator.Json
 
 let m:ConfunMap = [
+            "IntValue", Int 100
             "SrcPort", Port 10us
             "Str", Port 8080us
             "DatabaseConnection", Group [
