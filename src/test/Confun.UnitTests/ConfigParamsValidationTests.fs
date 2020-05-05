@@ -41,22 +41,25 @@ module ConfigParamsValidationTests =
         | Invalid errorList -> UnitTests.testFail (sprintf "validation result is error. Errors %A" errorList)
 
     [<Fact>]
-    let ``Empty group is valid by validateNamesUniquenesInGroupOptionStep``() =
+    let ``Empty group is valid by namesUniquenesInGroupValidationStep`` () =
         let group = "", Group []
-        group |> isValidByValidationStep ConfigParamsValidation.validateNamesUniquenesInGroupOptionStep
+        group
+        |> isValidByValidationStep ConfigParamsValidation.namesUniquenesInGroupValidationStep
 
     [<Fact>]
-    let ``Group is valid by validateNamesUniquenesInGroupOptionStep``() =
+    let ``Group is valid by namesUniquenesInGroupValidationStep`` () =
         let group =
             "GroupX",
             Group
                 [ "Name1", Port 1us
                   "Name2", Port 4us
                   "Name3", Port 1us ]
-        group |> isValidByValidationStep ConfigParamsValidation.validateNamesUniquenesInGroupOptionStep
+
+        group
+        |> isValidByValidationStep ConfigParamsValidation.namesUniquenesInGroupValidationStep
 
     [<Fact>]
-    let ``Group with duplicate names is invalid by validateNamesUniquenesInGroupOptionStep``() =
+    let ``Group with duplicate names is invalid by namesUniquenesInGroupValidationStep`` () =
         let group =
             "GroupY",
             Group
@@ -64,10 +67,12 @@ module ConfigParamsValidationTests =
                   "RepeatingName2", Str "2"
                   "RepeatingName", Port 3us
                   "RepeatingName2", Str "4" ]
-        group |> haveErrorsCountByValidationStep 2 ConfigParamsValidation.validateNamesUniquenesInGroupOptionStep
+
+        group
+        |> haveErrorsCountByValidationStep 2 ConfigParamsValidation.namesUniquenesInGroupValidationStep
 
     [<Fact>]
-    let ``Group duplicate names is contained in error list``() =
+    let ``Group duplicate names is contained in error list`` () =
         let group =
             "GroupZ",
             Group
@@ -76,19 +81,20 @@ module ConfigParamsValidationTests =
                   "NonRepeatingName", Port 3us
                   "RepeatingName", Port 3us
                   "RepeatingName2", Str "4" ]
-        group |> haveErrorsCountByValidationStep 2 ConfigParamsValidation.validateNamesUniquenesInGroupOptionStep
+
+        group
+        |> haveErrorsCountByValidationStep 2 ConfigParamsValidation.namesUniquenesInGroupValidationStep
         group
         |> errorsListContainsNameByValidationStep "RepeatingName"
-               ConfigParamsValidation.validateNamesUniquenesInGroupOptionStep
+               ConfigParamsValidation.namesUniquenesInGroupValidationStep
         group
         |> errorsListContainsNameByValidationStep "RepeatingName2"
-               ConfigParamsValidation.validateNamesUniquenesInGroupOptionStep
+               ConfigParamsValidation.namesUniquenesInGroupValidationStep
         group
-        |> allErrorsContainsNameByValidationStep "GroupZ"
-               ConfigParamsValidation.validateNamesUniquenesInGroupOptionStep
+        |> allErrorsContainsNameByValidationStep "GroupZ" ConfigParamsValidation.namesUniquenesInGroupValidationStep
 
     [<Fact>]
-    let ``Group with empty name option is invalid by validateNamesEmptinessInGroupOptionStep``() =
+    let ``Group with empty name option is invalid by namesEmptinessInGroupValidationStep`` () =
         let group =
             "GroupWithEmptyNameOption",
             Group
@@ -96,13 +102,15 @@ module ConfigParamsValidationTests =
                   "Name2", Str "2"
                   "    \t   ", Port 3us
                   "Name3", Str "4" ]
-        group |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.validateNamesEmptinessInGroupOptionStep
+
+        group
+        |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.namesEmptinessInGroupValidationStep
         group
         |> allErrorsContainsNameByValidationStep "GroupWithEmptyNameOption"
-               ConfigParamsValidation.validateNamesEmptinessInGroupOptionStep
+               ConfigParamsValidation.namesEmptinessInGroupValidationStep
 
     [<Fact>]
-    let ``Group with null name option is invalid by validateNamesEmptinessInGroupOptionStep``() =
+    let ``Group with null name option is invalid by namesEmptinessInGroupValidationStep`` () =
         let group =
             "GroupWithNullNameOption",
             Group
@@ -110,8 +118,17 @@ module ConfigParamsValidationTests =
                   "Name2", Str "2"
                   null, Port 3us
                   "Name3", Str "4" ]
-        group |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.validateNamesEmptinessInGroupOptionStep
+
+        group
+        |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.namesEmptinessInGroupValidationStep
         group
         |> allErrorsContainsNameByValidationStep "GroupWithNullNameOption"
-               ConfigParamsValidation.validateNamesEmptinessInGroupOptionStep
+               ConfigParamsValidation.namesEmptinessInGroupValidationStep
 
+    [<Fact>]
+    let ``Null string is invalid by nullStringValidationStep`` () =
+        let nullString = ("NullString", Str null)
+        nullString
+        |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.nullStringValidationStep
+        nullString
+        |> allErrorsContainsNameByValidationStep "NullString" ConfigParamsValidation.nullStringValidationStep

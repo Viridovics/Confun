@@ -7,10 +7,12 @@ and Dict = ConfigParam list
 and ConfigParam = string * ConfigValue
 
 and ConfigValue =
+    | Null
     | Int of int32
     | Float of float
     | Port of uint16
     | Str of string
+    | NullableString of string
     | Group of Dict
     | Array of ConfigValue array
 

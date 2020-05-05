@@ -7,8 +7,14 @@ open Confun.Generator.Yaml
 
 let m:ConfunMap = [
             "IntValue", Int 100
+            "PortArray", Array [|
+                Port 90us
+                Port 8080us
+                Port 80us
+            |]
             "SrcPort", Port 10us
             "Str", Port 8080us
+            "NullVal", Null
             "DatabaseConnection", Group [
                 "ConnectionString", Str "ms-sql.localhost:9090"
                 "Str2", Str "ms-sql.localhost:9090"

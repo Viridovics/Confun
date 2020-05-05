@@ -84,3 +84,16 @@ module MapValidationTests =
                   |]
             ]
         configMap |> haveErrorsCount 1
+
+    [<Fact>]
+    let ``Config with null string option is invalid``() =
+        let configMap =
+            [
+              "Port", Port 10us
+              "GroupArray", Array
+                  [| Group [
+                      "Name1", Str null
+                      "Name2", Port 10us]
+                  |]
+            ]
+        configMap |> haveErrorsCount 1

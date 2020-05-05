@@ -34,7 +34,7 @@ module ConfigParamsValidation =
 
         if List.isEmpty validationErrorList then Valid else Invalid validationErrorList
 
-    let validateNamesUniquenesInGroupOptionStep: ConfigParamValidationStep =
+    let namesUniquenesInGroupValidationStep: ConfigParamValidationStep =
         function
         | name, Group group ->
             let validationResult = validateOptionNamesUniquenesInList group
@@ -44,7 +44,7 @@ module ConfigParamsValidation =
                 Invalid(ValidationError.addPrefixToErrors (sprintf "Error in group: '%s'" name) errorList)
         | _ -> Valid
 
-    let validateNamesEmptinessInGroupOptionStep: ConfigParamValidationStep =
+    let namesEmptinessInGroupValidationStep: ConfigParamValidationStep =
         function
         | name, Group group ->
             let validationResult = validateOptionNamesForEmptiness group
@@ -53,3 +53,13 @@ module ConfigParamsValidation =
             | Invalid errorList ->
                 Invalid(ValidationError.addPrefixToErrors (sprintf "Error in group: '%s'" name) errorList)
         | _ -> Valid
+
+    let nullStringValidationStep: ConfigParamValidationStep =
+        function
+        | name, Str str ->
+            if isNull str then
+                Invalid [ ValidationError (sprintf "String '%s' is null. If you want to use null string then use Null or NullableString" name) ]
+            else
+                Valid
+        | _ -> Valid
+

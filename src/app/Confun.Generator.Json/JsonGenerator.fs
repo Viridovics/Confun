@@ -18,10 +18,12 @@ module JsonGenerator =
                 configDictionary
 
             match configValue with
+            | Null -> null :> obj
             | Int i -> i :> obj
             | Float f -> f :> obj
             | Port port -> port :> obj
             | Str str -> str :> obj
+            | NullableString str -> str :> obj
             | Array arr ->
                 arr
                 |> Seq.map representConfigParamAsSiimpleType

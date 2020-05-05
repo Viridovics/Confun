@@ -18,7 +18,7 @@ open Fake.DotNet
 
 open Fake.Core.TargetOperators
 
-exception GenerationError of string
+exception GenerationErrorException of string
 
 let dotnetSdkVersion = "3.1.101"
 
@@ -43,7 +43,7 @@ Target.create "Build" (fun _ -> DotNet.build compileWithoutArgs "Confun.sln")
 //TODO with working dir
 Target.create "Run" (fun _ ->
     let result = DotNet.exec (compileWithProject @".\src\test\FirstSample\FirstSample.fsproj") "run" ""
-    if (result.ExitCode <> 0) then raise (GenerationError(sprintf "%A" result.Messages)))
+    if (result.ExitCode <> 0) then raise (GenerationErrorException(sprintf "%A" result.Messages)))
 
 Target.create "Restore" (fun _ -> DotNet.restore compileWithoutArgs "Confun.sln")
 

@@ -56,8 +56,9 @@ module MapValidator =
             if List.isEmpty errorsList then Ok(ValidatedConfunMap configMap) else Error errorsList
 
     let validate configMap: MapValidationResult =
-        let optionConfigValidationSteps = [ ConfigParamsValidation.validateNamesUniquenesInGroupOptionStep;
-                                            ConfigParamsValidation.validateNamesEmptinessInGroupOptionStep ]
+        let optionConfigValidationSteps = [ ConfigParamsValidation.namesUniquenesInGroupValidationStep
+                                            ConfigParamsValidation.namesEmptinessInGroupValidationStep
+                                            ConfigParamsValidation.nullStringValidationStep ]
 
         let errorResults =
             [ namesUniquenessValidationStep

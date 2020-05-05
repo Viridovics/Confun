@@ -23,6 +23,8 @@ module YamlGeneratorTests =
                 "String", Str "qwerty"
             ]
             "SystemPorts", Array [| Port 40us; Port 80us; Port 8080us |]
+            "NullVal", Null
+            "NullStr", NullableString "Is not null"
         ]
         let deserializer = (DeserializerBuilder()).Build();
         let configDictionary = validatedConfunMap 
@@ -34,6 +36,8 @@ module YamlGeneratorTests =
         configDictionary.Item("Port") :?> string |> int |> should equal 10
         configDictionary.Item("String") |> should equal "qwerty"
         configDictionary.Item("SystemPorts") :?> List<obj> |> Seq.map (fun p -> p :?> string |> int) |> should equivalent [| 40; 80; 8080 |]
+        configDictionary.Item("NullVal") |> should equal null
+        configDictionary.Item("NullStr") |> should equal "Is not null"
 
         let group = configDictionary.Item("DatabaseConnection") :?> Dictionary<obj, obj>
         group.Item("Port") :?> string |> int |> should equal 10

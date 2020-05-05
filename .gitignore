@@ -192,3 +192,4 @@ docs/content/release-notes.md
 *.lock
 .vs
 coverage.opencover.xml
+.vscode
