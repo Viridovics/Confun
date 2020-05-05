@@ -11,8 +11,7 @@ open Newtonsoft.Json.Linq
 open Confun.Core.Types
 open Confun.Generator.Json
 
-
-module NewtonsoftJsonGeneratorTests =
+module JsonGeneratorTests =
     [<Fact>]
     let ``Generate valid config to json by NewtonsoftJsonGenerator``() =
         let validatedConfunMap = ValidatedConfunMap [
