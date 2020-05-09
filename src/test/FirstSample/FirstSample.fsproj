@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\app\Confun.Core.Processing\Confun.Core.Processing.fsproj" />
     <ProjectReference Include="..\..\app\Confun.Generator.Json\Confun.Generator.Json.fsproj" />
     <ProjectReference Include="..\..\app\Confun.Generator.Yaml\Confun.Generator.Yaml.fsproj" />
+    <ProjectReference Include="..\..\app\Confun.Generator.Xml\Confun.Generator.Xml.fsproj" />
   </ItemGroup>
 
 </Project>

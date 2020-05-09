@@ -4,6 +4,7 @@ open Confun.Core.Types
 open Confun.Core.Processing
 open Confun.Generator.Json
 open Confun.Generator.Yaml
+open Confun.Generator.Xml
 
 let m:ConfunMap = [
             "IntValue", Int 100
@@ -47,4 +48,7 @@ let main argv =
                     ConfigGenerator.generateConfig
                         { Name = "1.yaml"; DirectoryPath = "."; ParamsMap = validatedResult }
                         YamlGenerator.generator |> printf "%A"
+                    ConfigGenerator.generateConfig
+                        { Name = "1.xml"; DirectoryPath = "."; ParamsMap = validatedResult }
+                        (XmlGenerator.generator "ConfigRoot") |> printf "%A"
                     0
