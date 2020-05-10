@@ -24,6 +24,7 @@ module JsonGenerator =
             | Port port -> port :> obj
             | Str str -> str :> obj
             | NullableString str -> str :> obj
+            | Regex (_, text) ->  text :> obj
             | Array arr ->
                 arr
                 |> Seq.map representConfigParamAsSiimpleType

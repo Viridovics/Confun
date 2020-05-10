@@ -26,6 +26,7 @@ module JsonGeneratorTests =
             "SystemPorts", Array [| Port 40us; Port 80us; Port 8080us |]
             "NullVal", Null
             "NullStr", NullableString "Is not null"
+            "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.123")
         ]
 
         let configDictionary = validatedConfunMap 
@@ -39,7 +40,9 @@ module JsonGeneratorTests =
         (configDictionary.Item("SystemPorts") :?> JArray).ToObject<int array>() |> should equivalent [| 40; 80; 8080 |]
         configDictionary.Item("NullVal") |> should equal null
         configDictionary.Item("NullStr") |> should equal "Is not null"
+        configDictionary.Item("Version") |> should equal "123.123.432.123"
 
         let group = (configDictionary.Item("DatabaseConnection") :?> JObject).ToObject<Dictionary<string, obj>>()
         group.Item("Port") |> should equal 10
         group.Item("String") |> should equal "qwerty"
+

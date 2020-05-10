@@ -24,6 +24,7 @@ module XmlGeneratorTests =
             "SystemPorts", Array [| Port 40us; Port 80us; Port 8080us |]
             "NullVal", Null
             "NullStr", NullableString "Is not null"
+            "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.123")
         ]
         let xmlGenerator = XmlGenerator.generator "ConfigRoot"
         let xDocument = validatedConfunMap 
@@ -38,6 +39,7 @@ module XmlGeneratorTests =
         root.Element(XName.Get "SystemPorts").Elements() |> Seq.map (fun p -> p.Value |> int) |> should equivalent [| 40; 80; 8080 |]
         root.Element(XName.Get "NullVal").Value |> should equal ""
         root.Element(XName.Get "NullStr").Value |> should equal "Is not null"
+        root.Element(XName.Get "Version").Value |> should equal "123.123.432.123"
 
         let group = root.Element(XName.Get "DatabaseConnection")
         group.Element(XName.Get "Port").Value |> int |> should equal 10

@@ -97,3 +97,19 @@ module MapValidationTests =
                   |]
             ]
         configMap |> haveErrorsCount 1
+
+    [<Fact>]
+    let ``Config with unmatched regex is invalid``() =
+        let configMap =
+            [
+              "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.123.543")
+            ]
+        configMap |> haveErrorsCount 1
+
+    [<Fact>]
+    let ``Config with matched regex is valid``() =
+        let configMap =
+            [
+              "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.123")
+            ]
+        configMap |> isValid

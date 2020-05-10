@@ -13,8 +13,13 @@ and ConfigValue =
     | Port of uint16
     | Str of string
     | NullableString of string
+    | Regex of RegexPattern * Text
     | Group of Dict
     | Array of ConfigValue array
+
+and RegexPattern = string
+
+and Text = string
 
 type ValidationError = ValidationError of string
 

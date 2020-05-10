@@ -17,6 +17,7 @@ module XmlGenerator =
             | Port port -> XElement(paramXName, port)
             | Str str -> XElement(paramXName, str)
             | NullableString str -> XElement(paramXName, str)
+            | Regex (_, text) ->  XElement(paramXName, text)
             | Array arr ->
                 let xmlNodes = arr |> Seq.map (fun p -> convertConfigParamToXmlNode ("Item", p))
                 XElement(paramXName, xmlNodes)

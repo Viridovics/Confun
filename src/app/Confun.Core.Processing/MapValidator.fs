@@ -58,7 +58,8 @@ module MapValidator =
     let validate configMap: MapValidationResult =
         let optionConfigValidationSteps = [ ConfigParamsValidation.namesUniquenesInGroupValidationStep
                                             ConfigParamsValidation.namesEmptinessInGroupValidationStep
-                                            ConfigParamsValidation.nullStringValidationStep ]
+                                            ConfigParamsValidation.nullStringValidationStep
+                                            ConfigParamsValidation.regexValidationStep ]
 
         let errorResults =
             [ namesUniquenessValidationStep

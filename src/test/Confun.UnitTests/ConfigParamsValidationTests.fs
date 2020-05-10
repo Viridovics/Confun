@@ -127,8 +127,22 @@ module ConfigParamsValidationTests =
 
     [<Fact>]
     let ``Null string is invalid by nullStringValidationStep`` () =
-        let nullString = ("NullString", Str null)
+        let nullString = "NullString", Str null
         nullString
         |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.nullStringValidationStep
         nullString
         |> allErrorsContainsNameByValidationStep "NullString" ConfigParamsValidation.nullStringValidationStep
+
+    [<Fact>]
+    let ``Version is valid by regexValidationStep`` () =
+        let validParam = "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.123")
+        validParam |> isValidByValidationStep ConfigParamsValidation.regexValidationStep
+
+    [<Fact>]
+    let ``Invalid version is checked by regexValidationStep`` () =
+        let invalidParam = "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.")
+        invalidParam |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.regexValidationStep
+
+        invalidParam |> allErrorsContainsNameByValidationStep "123.123.432." ConfigParamsValidation.regexValidationStep
+        invalidParam |> allErrorsContainsNameByValidationStep "Version" ConfigParamsValidation.regexValidationStep
+        invalidParam |> allErrorsContainsNameByValidationStep @"^\d+\.\d+\.\d+\.\d+$" ConfigParamsValidation.regexValidationStep

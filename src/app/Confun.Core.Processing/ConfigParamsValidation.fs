@@ -63,3 +63,14 @@ module ConfigParamsValidation =
                 Valid
         | _ -> Valid
 
+    let regexValidationStep: ConfigParamValidationStep =
+        function
+        | paramName, Regex (pattern, text) ->
+            let fullPattern = sprintf "^%s$" pattern
+            let regexResult = System.Text.RegularExpressions.Regex.Match(text, fullPattern)
+            if not regexResult.Success then
+                Invalid [ ValidationError (sprintf "Regex param '%s' is invalid. Text '%s' is not matched by regex '%s'" paramName text fullPattern) ]
+            else
+                Valid
+        | _ -> Valid
+

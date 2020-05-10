@@ -31,6 +31,7 @@ let m:ConfunMap = [
                     "NoRepeatingName", Port 10us
                 ]
             |]
+            "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.123")
         ]
 
 [<EntryPoint>]
