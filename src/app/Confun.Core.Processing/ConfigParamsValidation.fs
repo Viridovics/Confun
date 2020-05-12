@@ -41,7 +41,7 @@ module ConfigParamsValidation =
             match validationResult with
             | Valid -> Valid
             | Invalid errorList ->
-                Invalid(ValidationError.addPrefixToErrors (sprintf "Error in group: '%s'" name) errorList)
+                Invalid(ValidationError.addPrefixToErrors (sprintf "Error in Group: '%s'" name) errorList)
         | _ -> Valid
 
     let namesEmptinessInGroupValidationStep: ConfigParamValidationStep =
@@ -51,7 +51,36 @@ module ConfigParamsValidation =
             match validationResult with
             | Valid -> Valid
             | Invalid errorList ->
-                Invalid(ValidationError.addPrefixToErrors (sprintf "Error in group: '%s'" name) errorList)
+                Invalid(ValidationError.addPrefixToErrors (sprintf "Error in Group: '%s'" name) errorList)
+        | _ -> Valid
+
+    let namesUniquenesInNodeValidationStep: ConfigParamValidationStep =
+        function
+        | name, Node (_, dict) ->
+            let validationResult = validateOptionNamesUniquenesInList dict
+            match validationResult with
+            | Valid -> Valid
+            | Invalid errorList ->
+                Invalid(ValidationError.addPrefixToErrors (sprintf "Error in Node: '%s'" name) errorList)
+        | _ -> Valid    
+
+    let namesEmptinessInNodeValidationStep: ConfigParamValidationStep =
+        function
+        | name, Node (_, dict) ->
+            let validationResult = validateOptionNamesForEmptiness dict
+            match validationResult with
+            | Valid -> Valid
+            | Invalid errorList ->
+                Invalid(ValidationError.addPrefixToErrors (sprintf "Error in Node: '%s'" name) errorList)
+        | _ -> Valid
+
+    let nodeNameEmptinessValidationStep: ConfigParamValidationStep =
+        function
+        | name, Node (innerNodeName, _) ->
+            if String.IsNullOrWhiteSpace innerNodeName then
+                Invalid([ ValidationError (sprintf "Node '%s' have empty NodeName" name)])
+            else
+                Valid
         | _ -> Valid
 
     let nullStringValidationStep: ConfigParamValidationStep =

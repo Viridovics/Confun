@@ -45,6 +45,10 @@ module MapValidator =
                                                     |> Array.mapi (fun index value -> ((sprintf "%s.[%d]" arrayName index)), value) 
                                                     |> Array.toList 
                                                     |> configParamsValidation
+                        | _, Node (nodeName, dict) -> dict 
+                                                    |> Seq.map (fun (paramName, value) -> ((sprintf "%s.%s" nodeName paramName)), value) 
+                                                    |> Seq.toList 
+                                                    |> configParamsValidation
                         | _ -> []))
 
                 let innerErrors = configParams |> Seq.collect optionValidation
@@ -58,6 +62,9 @@ module MapValidator =
     let validate configMap: MapValidationResult =
         let optionConfigValidationSteps = [ ConfigParamsValidation.namesUniquenesInGroupValidationStep
                                             ConfigParamsValidation.namesEmptinessInGroupValidationStep
+                                            ConfigParamsValidation.nodeNameEmptinessValidationStep
+                                            ConfigParamsValidation.namesUniquenesInNodeValidationStep
+                                            ConfigParamsValidation.namesEmptinessInNodeValidationStep
                                             ConfigParamsValidation.nullStringValidationStep
                                             ConfigParamsValidation.regexValidationStep ]
 

@@ -27,6 +27,9 @@ module JsonGeneratorTests =
             "NullVal", Null
             "NullStr", NullableString "Is not null"
             "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.123")
+            "Node", Node ("NodeName", [
+                             "IntValue", Int 100
+            ])
         ]
 
         let configDictionary = validatedConfunMap 
@@ -46,3 +49,6 @@ module JsonGeneratorTests =
         group.Item("Port") |> should equal 10
         group.Item("String") |> should equal "qwerty"
 
+        let node = (configDictionary.Item("Node") :?> JObject).ToObject<Dictionary<string, obj>>()
+        let innerNode = (node.Item("NodeName") :?> JObject).ToObject<Dictionary<string, obj>>()
+        innerNode.Item("IntValue") |> should equal 100

@@ -146,3 +146,5 @@ module ConfigParamsValidationTests =
         invalidParam |> allErrorsContainsNameByValidationStep "123.123.432." ConfigParamsValidation.regexValidationStep
         invalidParam |> allErrorsContainsNameByValidationStep "Version" ConfigParamsValidation.regexValidationStep
         invalidParam |> allErrorsContainsNameByValidationStep @"^\d+\.\d+\.\d+\.\d+$" ConfigParamsValidation.regexValidationStep
+
+//TODO: Add tests to Node rules

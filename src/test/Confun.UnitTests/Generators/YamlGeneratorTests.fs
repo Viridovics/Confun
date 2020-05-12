@@ -26,6 +26,9 @@ module YamlGeneratorTests =
             "NullVal", Null
             "NullStr", NullableString "Is not null"
             "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.123")
+            "Node", Node ("NodeName", [
+                             "IntValue", Int 100
+            ])
         ]
         let deserializer = (DeserializerBuilder()).Build();
         let configDictionary = validatedConfunMap 
@@ -45,4 +48,6 @@ module YamlGeneratorTests =
         group.Item("Port") :?> string |> int |> should equal 10
         group.Item("String") |> should equal "qwerty"
 
-
+        let node = configDictionary.Item("Node") :?> Dictionary<obj, obj>
+        let innerNode = node.Item("NodeName") :?> Dictionary<obj, obj>
+        innerNode.Item("IntValue") :?> string |> int |> should equal 100

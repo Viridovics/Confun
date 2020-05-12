@@ -6,6 +6,8 @@ open Confun.Generator.Json
 open Confun.Generator.Yaml
 open Confun.Generator.Xml
 
+let packageNode = Node.createNode2 "PackageReference" "Include" "Version"
+
 let m:ConfunMap = [
             "IntValue", Int 100
             "PortArray", Array [|
@@ -32,6 +34,10 @@ let m:ConfunMap = [
                 ]
             |]
             "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.123")
+            "ItemGroup", Array [|
+                packageNode (Str "WebSharper") (Str "4.6.1.381")
+                packageNode (Str "WebSharper") (Str "4.6.1.381")
+            |]
         ]
 
 [<EntryPoint>]

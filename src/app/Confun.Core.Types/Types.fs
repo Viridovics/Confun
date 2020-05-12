@@ -16,10 +16,13 @@ and ConfigValue =
     | Regex of RegexPattern * Text
     | Group of Dict
     | Array of ConfigValue array
+    | Node of NodeName * Dict
 
 and RegexPattern = string
 
 and Text = string
+
+and NodeName = string
 
 type ValidationError = ValidationError of string
 
@@ -31,8 +34,6 @@ type ConfigFile =
         DirectoryPath: string
         ParamsMap: ValidatedConfunMap
     }
-
-
 
 module ValidationError =
     let unwrap (ValidationError error) = error
@@ -46,3 +47,16 @@ module ValidationError =
 
 module ValidatedConfunMap =
     let unwrap (ValidatedConfunMap configMap) = configMap
+
+module Node =
+    let createNode1 (nodeName: NodeName) (paramName: string) paramValue =
+        Node (nodeName, [ (paramName, paramValue) ])
+
+    let createNode2 (nodeName: NodeName) (param1Name: string) (param2Name: string) param1Value param2Value =
+        Node (nodeName, [ param1Name, param1Value
+                          param2Name, param2Value ])
+
+    let createNode3 (nodeName: NodeName) (param1Name: string) (param2Name: string) (param3Name: string) param1Value param2Value param3Value =
+        Node (nodeName, [ param1Name, param1Value
+                          param2Name, param2Value
+                          param3Name, param3Value ])

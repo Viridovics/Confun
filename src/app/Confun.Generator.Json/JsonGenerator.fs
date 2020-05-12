@@ -30,6 +30,11 @@ module JsonGenerator =
                 |> Seq.map representConfigParamAsSiimpleType
                 |> Seq.toArray :> obj
             | Group group -> group |> toSystemDictionary :> obj
+            | Node (name, dict) ->
+                let nodeDictionary = new Dictionary<string, obj>()
+                let nodeEntry = dict |> toSystemDictionary
+                nodeDictionary.Add(name, nodeEntry)
+                nodeDictionary :> obj
 
     let generator: ConfigMapGenerator =
         fun (ValidatedConfunMap confunMap) ->

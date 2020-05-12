@@ -8,6 +8,22 @@ open Confun.Core.Types
 module XmlGenerator =
     let rec private convertConfigParamToXmlNode: ConfigParam -> XElement  =
         fun configParam ->
+            let convertNodeToXml name (dict: Dict) =
+                let nodeXName = XName.Get name
+                let node = XElement(nodeXName)
+                dict |> Seq.iter (fun (paramName, paramValue) ->
+                                        let paramXName = XName.Get paramName
+                                        match paramValue with
+                                        | Null -> node.SetAttributeValue(paramXName, "")
+                                        | Int i -> node.SetAttributeValue(paramXName, i)
+                                        | Float f -> node.SetAttributeValue(paramXName, f)
+                                        | Port port -> node.SetAttributeValue(paramXName, port)
+                                        | Str str -> node.SetAttributeValue(paramXName, str)
+                                        | NullableString str -> node.SetAttributeValue(paramXName, str)
+                                        | Regex (_, text) ->  node.SetAttributeValue(paramXName, text)
+                                        | _ -> node.Add(convertConfigParamToXmlNode (paramName, paramValue)))
+                node
+
             let paramName, paramValue = configParam
             let paramXName = XName.Get paramName
             match paramValue with
@@ -24,6 +40,8 @@ module XmlGenerator =
             | Group group ->
                 let xmlNodes = group |> Seq.map convertConfigParamToXmlNode
                 XElement(paramXName, xmlNodes)
+            | Node (name, dict) ->
+                convertNodeToXml name dict
 
     let generator (xmlRoot: string): ConfigMapGenerator =
         fun (ValidatedConfunMap confunMap) ->

@@ -113,3 +113,47 @@ module MapValidationTests =
               "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.123")
             ]
         configMap |> isValid
+
+    [<Fact>]
+    let ``Config with duplicate names in different node is valid``() =
+        let configMap =
+            [ "RepeatingName", Port 42us
+              "Node1", Node ("add", [ "RepeatingName", Port 42us ])
+              "Node2", Node ("add", [ "RepeatingName", Port 42us ])]
+        configMap |> isValid
+
+    [<Fact>]
+    let ``Config with duplicate names in node is invalid``() =
+        let configMap =
+            [ "RepeatingName", Port 10us
+              "Node",
+              Node
+                  ("add",
+                  [ "RepeatingName", Str "43"
+                    "NameNormal", Str "42"
+                    "RepeatingName", Port 90us ]) ]
+        configMap |> haveErrorsCount 1
+
+    [<Fact>]
+    let ``Config with empty name option in node is invalid``() =
+        let configMap =
+            [ "RepeatingName", Port 10us
+              "Node",
+              Node
+                  ("add",
+                  [ "RepeatingName", Str "43"
+                    "     ", Str "42"
+                    "RepeatingName", Port 90us ]) ]
+        configMap |> haveErrorsCount 2
+
+    [<Fact>]
+    let ``Config with empty node name is invalid``() =
+        let configMap =
+            [ "RepeatingName", Port 10us
+              "Node",
+              Node
+                  ("",
+                  [ "RepeatingName", Str "43"
+                    "NameNormal", Str "42"
+                    "RepeatingName", Port 90us ]) ]
+        configMap |> haveErrorsCount 2
