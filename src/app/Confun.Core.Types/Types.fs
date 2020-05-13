@@ -28,11 +28,18 @@ type ValidationError = ValidationError of string
 
 type ValidatedConfunMap = ValidatedConfunMap of ConfunMap
 
+type ValidatedConfigFile =
+    {
+        Name: string
+        DirectoryPath: string
+        ValidatedParamsMap: ValidatedConfunMap
+    }
+
 type ConfigFile =
     {
         Name: string
         DirectoryPath: string
-        ParamsMap: ValidatedConfunMap
+        ParamsMap: ConfunMap
     }
 
 module ValidationError =
