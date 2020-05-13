@@ -135,16 +135,93 @@ module ConfigParamsValidationTests =
 
     [<Fact>]
     let ``Version is valid by regexValidationStep`` () =
-        let validParam = "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.123")
-        validParam |> isValidByValidationStep ConfigParamsValidation.regexValidationStep
+        let validParam =
+            "Version", Regex(@"\d+\.\d+\.\d+\.\d+", "123.123.432.123")
+
+        validParam
+        |> isValidByValidationStep ConfigParamsValidation.regexValidationStep
 
     [<Fact>]
     let ``Invalid version is checked by regexValidationStep`` () =
-        let invalidParam = "Version", Regex (@"\d+\.\d+\.\d+\.\d+", "123.123.432.")
-        invalidParam |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.regexValidationStep
+        let invalidParam =
+            "Version", Regex(@"\d+\.\d+\.\d+\.\d+", "123.123.432.")
 
-        invalidParam |> allErrorsContainsNameByValidationStep "123.123.432." ConfigParamsValidation.regexValidationStep
-        invalidParam |> allErrorsContainsNameByValidationStep "Version" ConfigParamsValidation.regexValidationStep
-        invalidParam |> allErrorsContainsNameByValidationStep @"^\d+\.\d+\.\d+\.\d+$" ConfigParamsValidation.regexValidationStep
+        invalidParam
+        |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.regexValidationStep
 
-//TODO: Add tests to Node rules
+        invalidParam
+        |> allErrorsContainsNameByValidationStep "123.123.432." ConfigParamsValidation.regexValidationStep
+        invalidParam
+        |> allErrorsContainsNameByValidationStep "Version" ConfigParamsValidation.regexValidationStep
+        invalidParam
+        |> allErrorsContainsNameByValidationStep @"^\d+\.\d+\.\d+\.\d+$" ConfigParamsValidation.regexValidationStep
+
+    [<Fact>]
+    let ``Node is valid by namesUniquenesInNodeValidationStep, namesEmptinessInNodeValidationStep, nodeNameEmptinessValidationStep`` () =
+        let node =
+            "NodeX",
+            Node
+                ("NodeName",
+                 [ "Name1", Port 1us
+                   "Name2", Port 4us
+                   "Name3", Port 1us ])
+
+        node
+        |> isValidByValidationStep ConfigParamsValidation.namesUniquenesInNodeValidationStep
+
+        node
+        |> isValidByValidationStep ConfigParamsValidation.namesEmptinessInNodeValidationStep
+
+        node
+        |> isValidByValidationStep ConfigParamsValidation.nodeNameEmptinessValidationStep
+
+    [<Fact>]
+    let ``Node with duplicate params is invalid by namesUniquenesInNodeValidationStep`` () =
+        let node =
+            "NodeX",
+            Node
+                ("NodeName",
+                 [ "Name1", Port 1us
+                   "Name2", Port 4us
+                   "Name1", Port 1us ])
+
+        node
+        |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.namesUniquenesInNodeValidationStep
+
+        node
+        |> allErrorsContainsNameByValidationStep "Name1" ConfigParamsValidation.namesUniquenesInNodeValidationStep
+
+        node
+        |> allErrorsContainsNameByValidationStep "NodeX" ConfigParamsValidation.namesUniquenesInNodeValidationStep
+
+    [<Fact>]
+    let ``Node with empty params is invalid by namesUniquenesInNodeValidationStep`` () =
+        let node =
+            "NodeX",
+            Node
+                ("NodeName",
+                 [ "Name1", Port 1us
+                   "Name2", Port 4us
+                   "", Port 1us ])
+
+        node
+        |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.namesEmptinessInNodeValidationStep
+
+        node
+        |> allErrorsContainsNameByValidationStep "NodeX" ConfigParamsValidation.namesEmptinessInNodeValidationStep
+
+    [<Fact>]
+    let ``Node with empty NodeName is invalid by nodeNameEmptinessValidationStep`` () =
+        let node =
+            "NodeX",
+            Node
+                ("",
+                 [ "Name1", Port 1us
+                   "Name2", Port 4us
+                   "Name3", Port 1us ])
+
+        node
+        |> haveErrorsCountByValidationStep 1 ConfigParamsValidation.nodeNameEmptinessValidationStep
+
+        node
+        |> allErrorsContainsNameByValidationStep "NodeX" ConfigParamsValidation.nodeNameEmptinessValidationStep
