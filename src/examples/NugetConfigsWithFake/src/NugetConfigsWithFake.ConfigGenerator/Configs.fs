@@ -12,6 +12,7 @@ let lib1NugetConfig = {
     ParamsMap = [
         "ItemGroup", Array [|
             NLogPackage
+            NewtonSoftJsonPackage
         |]
     ]
 }
@@ -32,6 +33,7 @@ let lib3NugetConfig = {
     ParamsMap = [
         "ItemGroup", Array [|
             NLogPackage
+            NewtonSoftJsonPackage
         |]
     ]
 }
