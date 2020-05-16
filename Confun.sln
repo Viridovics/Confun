@@ -9,7 +9,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Confun.Core.Types", "src\ap
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{8FF1DD7B-616D-417B-9619-7830C9B03B83}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FirstSample", "src\test\FirstSample\FirstSample.fsproj", "{7726A0DB-9A5E-4628-9E23-8EA7237361EE}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Confun.TestApp", "src\test\Confun.TestApp\Confun.TestApp.fsproj", "{7726A0DB-9A5E-4628-9E23-8EA7237361EE}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Confun.Core.Processing", "src\app\Confun.Core.Processing\Confun.Core.Processing.fsproj", "{8C14F194-1EFD-491B-8EBE-A94A0E11B06E}"
 EndProject

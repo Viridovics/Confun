@@ -45,18 +45,16 @@ let inline runTestWithCollectCoverage arg =
 
 let confunSlnPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, "Confun.sln")
 let unitTestsPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"src\test\Confun.UnitTests\Confun.UnitTests.fsproj")
-let testAppPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"src\test\FirstSample\FirstSample.fsproj")
+let testAppPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"src\test\Confun.TestApp\Confun.TestApp.fsproj")
 
 // Default target
 Target.create "Build" (fun _ -> DotNet.build compileWithoutArgs confunSlnPath)
 
-Target.create "Run" (fun _ ->
+Target.create "RunTestApp" (fun _ ->
     let result = DotNet.exec (compileWithProjectPathAndFsxWorkingDirectory testAppPath) "run" ""
     if (result.ExitCode <> 0) then raise (GenerationErrorException(sprintf "%A" result.Messages)))
 
 Target.create "Restore" (fun _ -> DotNet.restore compileWithoutArgs confunSlnPath)
-
-let artifactsTestsDir  = "./artifacts/tests/"
 
 Target.create "RunTests" (fun _ ->
     DotNet.test runTestWithCollectCoverage unitTestsPath
