@@ -12,7 +12,7 @@ module ConfigGenerator =
     let printErrors (errors: ValidationError list) =
         sprintf "Validation errors: '%A'" (Seq.toList errors)
 
-    let generateConfig (configFile: ValidatedConfigFile) (configMapGenerator: ConfigMapGenerator) =
+    let generateConfig (configMapGenerator: ConfigMapGenerator) (configFile: ValidatedConfigFile) =
         try
             File.WriteAllText
                 (Path.Combine(configFile.DirectoryPath, configFile.Name), (configMapGenerator configFile.ValidatedParamsMap))

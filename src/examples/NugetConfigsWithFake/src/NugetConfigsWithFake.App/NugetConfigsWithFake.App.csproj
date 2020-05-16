@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NugetConfigsWithFake.Lib1\NugetConfigsWithFake.Lib1.csproj" />
+    <ProjectReference Include="..\NugetConfigsWithFake.Lib2\NugetConfigsWithFake.Lib2.csproj" />
+    <ProjectReference Include="..\NugetConfigsWithFake.Lib3\NugetConfigsWithFake.Lib3.csproj" />
+  </ItemGroup>
+
+  <Import Project="Nuget.App.props" />
+</Project>

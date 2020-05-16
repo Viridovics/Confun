@@ -4,8 +4,8 @@ open Confun.Core.Processing.Api
 open Confun.Core.Types
 
 module ConfigValidator =
-    let validate (mapValidation: ConfunMap -> MapValidationResult) (config: ConfigFile) =
-        let validationResult = mapValidation config.ParamsMap
+    let validate (config: ConfigFile) =
+        let validationResult = MapValidator.validate config.ParamsMap
         match validationResult with
         | Error validationErrors -> Error (ValidationError.addPrefixToErrors (sprintf "Error in config: '%s'" config.Name) validationErrors)
         | Ok validatedConfigMap ->

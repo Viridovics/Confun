@@ -43,12 +43,12 @@ let m:ConfunMap = [
 [<EntryPoint>]
 let main argv =
     let config = { Name = "1.xml"; DirectoryPath = "."; ParamsMap = m }
-    let configValidationRes = ConfigValidator.validate MapValidator.validate config
+    let configValidationRes = ConfigValidator.validate config
     match configValidationRes with
     | Error error ->
                     printf "%s" (ConfigGenerator.printErrors error)
     | Ok validatedConfig ->
-                    ConfigGenerator.generateConfig validatedConfig (XmlGenerator.generator "ConfigRoot") |> printf "%A"
+                    ConfigGenerator.generateConfig (XmlGenerator.generator "ConfigRoot") validatedConfig |> printf "%A"
 
     let res = MapValidator.validate m
     match res with
@@ -58,9 +58,9 @@ let main argv =
     | Ok validatedResult -> 
                     printf "%s" (JsonGenerator.generator validatedResult)
                     ConfigGenerator.generateConfig
-                        { Name = "1.json"; DirectoryPath = "."; ValidatedParamsMap = validatedResult }
-                        JsonGenerator.generator |> printf "%A"
+                        JsonGenerator.generator
+                        { Name = "1.json"; DirectoryPath = "."; ValidatedParamsMap = validatedResult } |> printf "%A"
                     ConfigGenerator.generateConfig
-                        { Name = "1.yaml"; DirectoryPath = "."; ValidatedParamsMap = validatedResult }
-                        YamlGenerator.generator |> printf "%A"
+                        YamlGenerator.generator
+                        { Name = "1.yaml"; DirectoryPath = "."; ValidatedParamsMap = validatedResult } |> printf "%A"
                     0
