@@ -10,8 +10,7 @@
     nuget Fake.Tools.Git
     nuget Fake.DotNet.Paket
     nuget Fake.Api.GitHub"
-#load "./.fake/fake.fsx/intellisense.fsx"
-
+#load "./.fake/build.fsx/intellisense.fsx"
 
 open Fake.Core
 open Fake.DotNet

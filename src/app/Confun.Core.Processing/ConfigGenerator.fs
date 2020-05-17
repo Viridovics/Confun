@@ -19,16 +19,6 @@ module ConfigGenerator =
         with e -> Error [ (GenerationError (sprintf "Generation process for '%s' failed with exception: '%A'" configPath e)) ]
 
     let generateAll (configMapGenerator: ConfigMapGenerator) (configs: ValidatedConfigFile list) =
-        let generationResults = configs |> List.map (generate configMapGenerator)
-        let validationSuccess = generationResults |> List.forall (function | Ok _ -> true | _ -> false)
-        if validationSuccess then
-            Ok (generationResults  
-                    |> List.choose (function 
-                                    | Ok result -> Some result
-                                    | _ -> None))
-        else
-            Error (generationResults 
-                    |> List.choose (function 
-                                    | Error errors -> Some errors
-                                    | _ -> None)
-                    |> List.concat)
+        configs 
+            |> List.map (generate configMapGenerator)
+            |> ConfunError.aggregateResults

@@ -24,25 +24,22 @@ and Text = string
 
 and NodeName = string
 
-type ConfunError =
-    | ValidationError of string
-    | GenerationError of string
-
 type ValidatedConfunMap = ValidatedConfunMap of ConfunMap
 
 type ValidatedConfigFile =
-    {
-        Name: string
-        DirectoryPath: string
-        ValidatedParamsMap: ValidatedConfunMap
-    }
+    { Name: string
+      DirectoryPath: string
+      ValidatedParamsMap: ValidatedConfunMap }
 
 type ConfigFile =
-    {
-        Name: string
-        DirectoryPath: string
-        ParamsMap: ConfunMap
-    }
+    { Name: string
+      DirectoryPath: string
+      ParamsMap: ConfunMap }
+
+
+type ConfunError =
+    | ValidationError of string
+    | GenerationError of string
 
 module ConfunError =
     let toString =
@@ -53,21 +50,78 @@ module ConfunError =
     let addPrefixToErrors prefix errorList =
         errorList
         |> List.map (function
-                        | ValidationError error -> error |> (sprintf "%s. %s" prefix) |> ValidationError
-                        | GenerationError error -> error |> (sprintf "%s. %s" prefix) |> GenerationError)
+            | ValidationError error ->
+                error
+                |> (sprintf "%s. %s" prefix)
+                |> ValidationError
+            | GenerationError error ->
+                error
+                |> (sprintf "%s. %s" prefix)
+                |> GenerationError)
+
+    let aggregateResults results =
+        let allResultsSuccess =
+            results
+            |> List.forall (function
+                | Ok _ -> true
+                | _ -> false)
+
+        if allResultsSuccess then
+            Ok
+                (results
+                 |> List.choose (function
+                     | Ok result -> Some result
+                     | _ -> None))
+        else
+            Error
+                (results
+                 |> List.choose (function
+                     | Error errors -> Some errors
+                     | _ -> None)
+                 |> List.concat)
 
 module ValidatedConfunMap =
     let unwrap (ValidatedConfunMap configMap) = configMap
 
 module Node =
     let createNode1 (nodeName: NodeName) (paramName: string) paramValue =
-        Node (nodeName, [ (paramName, paramValue) ])
+        Node(nodeName, [ (paramName, paramValue) ])
 
     let createNode2 (nodeName: NodeName) (param1Name: string) (param2Name: string) param1Value param2Value =
-        Node (nodeName, [ param1Name, param1Value
-                          param2Name, param2Value ])
+        Node
+            (nodeName,
+             [ param1Name, param1Value
+               param2Name, param2Value ])
 
-    let createNode3 (nodeName: NodeName) (param1Name: string) (param2Name: string) (param3Name: string) param1Value param2Value param3Value =
-        Node (nodeName, [ param1Name, param1Value
-                          param2Name, param2Value
-                          param3Name, param3Value ])
+    let createNode3
+        (nodeName: NodeName)
+        (param1Name: string)
+        (param2Name: string)
+        (param3Name: string)
+        param1Value
+        param2Value
+        param3Value
+        =
+        Node
+            (nodeName,
+             [ param1Name, param1Value
+               param2Name, param2Value
+               param3Name, param3Value ])
+
+    let createNode4
+        (nodeName: NodeName)
+        (param1Name: string)
+        (param2Name: string)
+        (param3Name: string)
+        (param4Name: string)
+        param1Value
+        param2Value
+        param3Value
+        param4Value
+        =
+        Node
+            (nodeName,
+             [ param1Name, param1Value
+               param2Name, param2Value
+               param3Name, param3Value
+               param4Name, param4Value ])

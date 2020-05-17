@@ -1,6 +1,5 @@
 namespace Confun.Core.Processing
 
-open Confun.Core.Processing.Api
 open Confun.Core.Types
 
 module ConfigValidator =
@@ -12,17 +11,6 @@ module ConfigValidator =
             Ok { Name = config.Name; DirectoryPath = config.DirectoryPath; ValidatedParamsMap = validatedConfigMap }
 
     let validateAll (configs: ConfigFile list) =
-        let validationResults = configs |> List.map validate
-        let validationSuccess = validationResults |> List.forall (function | Ok _ -> true | _ -> false)
-        if validationSuccess then
-            Ok (validationResults  
-                    |> List.choose (function 
-                                    | Ok result -> Some result
-                                    | _ -> None))
-        else
-            Error (validationResults 
-                    |> List.choose (function 
-                                    | Error errors -> Some errors
-                                    | _ -> None)
-                    |> List.concat)
-
+        configs 
+            |> List.map validate
+            |> ConfunError.aggregateResults
