@@ -48,7 +48,7 @@ let main argv =
     | Error error ->
                     printf "%s" (ConfigGenerator.printErrors error)
     | Ok validatedConfig ->
-                    ConfigGenerator.generateConfig (XmlGenerator.generator "ConfigRoot") validatedConfig |> printf "%A"
+                    ConfigGenerator.generate (XmlGenerator.generator "ConfigRoot") validatedConfig |> printf "%A"
 
     let res = MapValidator.validate m
     match res with
@@ -57,10 +57,10 @@ let main argv =
                     1
     | Ok validatedResult -> 
                     printf "%s" (JsonGenerator.generator validatedResult)
-                    ConfigGenerator.generateConfig
+                    ConfigGenerator.generate
                         JsonGenerator.generator
                         { Name = "1.json"; DirectoryPath = "."; ValidatedParamsMap = validatedResult } |> printf "%A"
-                    ConfigGenerator.generateConfig
+                    ConfigGenerator.generate
                         YamlGenerator.generator
                         { Name = "1.yaml"; DirectoryPath = "."; ValidatedParamsMap = validatedResult } |> printf "%A"
                     0

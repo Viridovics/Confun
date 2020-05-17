@@ -6,9 +6,9 @@ type ValidationResult<'TError> =
     | Valid
     | Invalid of 'TError
 
-type MapValidationResult = Result<ValidatedConfunMap, ValidationError list>
+type MapValidationResult = Result<ValidatedConfunMap, ConfunError list>
 
-type OptionValidationResult = ValidationResult<ValidationError list>
+type OptionValidationResult = ValidationResult<ConfunError list>
 
 type MapValidationStep = ConfunMap -> MapValidationResult
 

@@ -6,7 +6,7 @@ open Confun.Core.Processing.Api
 open Confun.Core.Types
 
 module ConfigParamsValidation =
-    let internal validateOptionNamesUniquenesInList (configParams: ConfigParam list): ValidationResult<ValidationError list> =
+    let internal validateOptionNamesUniquenesInList (configParams: ConfigParam list): ValidationResult<ConfunError list> =
         let duplicatesOptionsNames =
             configParams
             |> List.map (function
@@ -22,7 +22,7 @@ module ConfigParamsValidation =
 
         if List.isEmpty validationErrorList then Valid else Invalid validationErrorList
 
-    let internal validateOptionNamesForEmptiness (configParams: ConfigParam list): ValidationResult<ValidationError list> =
+    let internal validateOptionNamesForEmptiness (configParams: ConfigParam list): ValidationResult<ConfunError list> =
         let optionsWithEmptyName =
             configParams
             |> List.filter (fun (optionName, _) -> String.IsNullOrWhiteSpace optionName )
@@ -41,7 +41,7 @@ module ConfigParamsValidation =
             match validationResult with
             | Valid -> Valid
             | Invalid errorList ->
-                Invalid(ValidationError.addPrefixToErrors (sprintf "Error in Group: '%s'" name) errorList)
+                Invalid(ConfunError.addPrefixToErrors (sprintf "Error in Group: '%s'" name) errorList)
         | _ -> Valid
 
     let namesEmptinessInGroupValidationStep: ConfigParamValidationStep =
@@ -51,7 +51,7 @@ module ConfigParamsValidation =
             match validationResult with
             | Valid -> Valid
             | Invalid errorList ->
-                Invalid(ValidationError.addPrefixToErrors (sprintf "Error in Group: '%s'" name) errorList)
+                Invalid(ConfunError.addPrefixToErrors (sprintf "Error in Group: '%s'" name) errorList)
         | _ -> Valid
 
     let namesUniquenesInNodeValidationStep: ConfigParamValidationStep =
@@ -61,7 +61,7 @@ module ConfigParamsValidation =
             match validationResult with
             | Valid -> Valid
             | Invalid errorList ->
-                Invalid(ValidationError.addPrefixToErrors (sprintf "Error in Node: '%s'" name) errorList)
+                Invalid(ConfunError.addPrefixToErrors (sprintf "Error in Node: '%s'" name) errorList)
         | _ -> Valid    
 
     let namesEmptinessInNodeValidationStep: ConfigParamValidationStep =
@@ -71,7 +71,7 @@ module ConfigParamsValidation =
             match validationResult with
             | Valid -> Valid
             | Invalid errorList ->
-                Invalid(ValidationError.addPrefixToErrors (sprintf "Error in Node: '%s'" name) errorList)
+                Invalid(ConfunError.addPrefixToErrors (sprintf "Error in Node: '%s'" name) errorList)
         | _ -> Valid
 
     let nodeNameEmptinessValidationStep: ConfigParamValidationStep =

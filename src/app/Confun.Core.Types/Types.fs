@@ -24,7 +24,9 @@ and Text = string
 
 and NodeName = string
 
-type ValidationError = ValidationError of string
+type ConfunError =
+    | ValidationError of string
+    | GenerationError of string
 
 type ValidatedConfunMap = ValidatedConfunMap of ConfunMap
 
@@ -42,15 +44,17 @@ type ConfigFile =
         ParamsMap: ConfunMap
     }
 
-module ValidationError =
-    let unwrap (ValidationError error) = error
+module ConfunError =
+    let toString =
+        function
+        | ValidationError error -> error
+        | GenerationError error -> error
 
     let addPrefixToErrors prefix errorList =
         errorList
-        |> List.map
-            (unwrap
-             >> (sprintf "%s. %s" prefix)
-             >> ValidationError)
+        |> List.map (function
+                        | ValidationError error -> error |> (sprintf "%s. %s" prefix) |> ValidationError
+                        | GenerationError error -> error |> (sprintf "%s. %s" prefix) |> GenerationError)
 
 module ValidatedConfunMap =
     let unwrap (ValidatedConfunMap configMap) = configMap

@@ -13,7 +13,7 @@ module ConfigParamsValidationTests =
         match validationResult with
         | Invalid errorList ->
             errorList
-            |> List.map ValidationError.unwrap
+            |> List.map ConfunError.toString
             |> erorrsListCheck
         | _ -> UnitTests.testFail (sprintf "validation result is not invalid. Actual result %A" validationResult)
 

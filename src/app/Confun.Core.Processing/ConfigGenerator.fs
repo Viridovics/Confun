@@ -5,16 +5,30 @@ open System.IO
 open Confun.Core.Processing.Api
 open Confun.Core.Types
 
-
 module ConfigGenerator =
-    let printError (ValidationError error) = sprintf "Validation error: '%A'" error
+    let printError error = sprintf "Validation error: '%A'" error
 
-    let printErrors (errors: ValidationError list) =
+    let printErrors (errors: ConfunError list) =
         sprintf "Validation errors: '%A'" (Seq.toList errors)
 
-    let generateConfig (configMapGenerator: ConfigMapGenerator) (configFile: ValidatedConfigFile) =
+    let generate (configMapGenerator: ConfigMapGenerator) (configFile: ValidatedConfigFile) =
+        let configPath = Path.Combine(configFile.DirectoryPath, configFile.Name)
         try
-            File.WriteAllText
-                (Path.Combine(configFile.DirectoryPath, configFile.Name), (configMapGenerator configFile.ValidatedParamsMap))
-            Ok "Success"
-        with e -> Error("Error: " + e.ToString())
+            File.WriteAllText(configPath, (configMapGenerator configFile.ValidatedParamsMap))
+            Ok (sprintf "File '%s' is successfully generated" configPath)
+        with e -> Error [ (GenerationError (sprintf "Generation process for '%s' failed with exception: '%A'" configPath e)) ]
+
+    let generateAll (configMapGenerator: ConfigMapGenerator) (configs: ValidatedConfigFile list) =
+        let generationResults = configs |> List.map (generate configMapGenerator)
+        let validationSuccess = generationResults |> List.forall (function | Ok _ -> true | _ -> false)
+        if validationSuccess then
+            Ok (generationResults  
+                    |> List.choose (function 
+                                    | Ok result -> Some result
+                                    | _ -> None))
+        else
+            Error (generationResults 
+                    |> List.choose (function 
+                                    | Error errors -> Some errors
+                                    | _ -> None)
+                    |> List.concat)

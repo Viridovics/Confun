@@ -12,7 +12,7 @@ module MapValidator =
                 configMap
                 |> ValidatedConfunMap
                 |> Ok
-            | Invalid errorList -> Error(ValidationError.addPrefixToErrors "Error in-root of config map" errorList)
+            | Invalid errorList -> Error(ConfunError.addPrefixToErrors "Error in-root of config map" errorList)
 
     let private namesEmptinessValidationStep: MapValidationStep =
         fun configMap ->
@@ -22,7 +22,7 @@ module MapValidator =
                 configMap
                 |> ValidatedConfunMap
                 |> Ok
-            | Invalid errorList -> Error(ValidationError.addPrefixToErrors "Error in-root of config map" errorList)
+            | Invalid errorList -> Error(ConfunError.addPrefixToErrors "Error in-root of config map" errorList)
 
     let private configParamsValidationStep (optionValidationSteps: ConfigParamValidationStep list): MapValidationStep =
         fun configMap ->
