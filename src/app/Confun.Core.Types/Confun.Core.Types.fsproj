@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Types.fs" />
+    <Compile Include="ConfigTypes.fs" />
+    <Compile Include="ErrorsTypes.fs" />
   </ItemGroup>
 
 </Project>

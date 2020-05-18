@@ -2,14 +2,13 @@
 
 open System.Diagnostics.CodeAnalysis
 
-[<ExcludeFromCodeCoverage>]
 type ConfunMap = Dict
 
 and Dict = ConfigParam list
 
 and ConfigParam = string * ConfigValue
 
-and ConfigValue =
+and [<ExcludeFromCodeCoverage>] ConfigValue =
     | Null
     | Int of int32
     | Float of float
@@ -27,63 +26,24 @@ and Text = string
 
 and NodeName = string
 
+[<ExcludeFromCodeCoverage>]
 type ValidatedConfunMap = ValidatedConfunMap of ConfunMap
 
+[<ExcludeFromCodeCoverage>]
 type ValidatedConfigFile =
     { Name: string
       DirectoryPath: string
       ValidatedParamsMap: ValidatedConfunMap }
 
+[<ExcludeFromCodeCoverage>]
 type ConfigFile =
     { Name: string
       DirectoryPath: string
       ParamsMap: ConfunMap }
 
-[<ExcludeFromCodeCoverage>]
-type ConfunError =
-    | ValidationError of string
-    | GenerationError of string
-
-module ConfunError =
-    let toString =
-        function
-        | ValidationError error -> error
-        | GenerationError error -> error
-
-    let addPrefixToErrors prefix errorList =
-        errorList
-        |> List.map (function
-            | ValidationError error ->
-                error
-                |> (sprintf "%s. %s" prefix)
-                |> ValidationError
-            | GenerationError error ->
-                error
-                |> (sprintf "%s. %s" prefix)
-                |> GenerationError)
-
-    let aggregateResults results =
-        let allResultsSuccess =
-            results
-            |> List.forall (function
-                | Ok _ -> true
-                | _ -> false)
-
-        if allResultsSuccess then
-            Ok
-                (results
-                 |> List.choose (function
-                     | Ok result -> Some result
-                     | _ -> None))
-        else
-            Error
-                (results
-                 |> List.choose (function
-                     | Error errors -> Some errors
-                     | _ -> None)
-                 |> List.concat)
 
 module ValidatedConfunMap =
+    [<ExcludeFromCodeCoverage>]
     let unwrap (ValidatedConfunMap configMap) = configMap
 
 module Node =

@@ -6,22 +6,20 @@ open Confun.Core.Types
 module MapValidator =
     let private namesUniquenessValidationStep: MapValidationStep =
         fun configMap ->
-            let validationResult = ConfigParamsValidation.validateOptionNamesUniquenesInList configMap
+            let validationResult =
+                ConfigParamsValidation.validateOptionNamesUniquenesInList configMap
+
             match validationResult with
-            | Valid ->
-                configMap
-                |> ValidatedConfunMap
-                |> Ok
+            | Valid -> configMap |> ValidatedConfunMap |> Ok
             | Invalid errorList -> Error(ConfunError.addPrefixToErrors "Error in-root of config map" errorList)
 
     let private namesEmptinessValidationStep: MapValidationStep =
         fun configMap ->
-            let validationResult = ConfigParamsValidation.validateOptionNamesForEmptiness configMap
+            let validationResult =
+                ConfigParamsValidation.validateOptionNamesForEmptiness configMap
+
             match validationResult with
-            | Valid ->
-                configMap
-                |> ValidatedConfunMap
-                |> Ok
+            | Valid -> configMap |> ValidatedConfunMap |> Ok
             | Invalid errorList -> Error(ConfunError.addPrefixToErrors "Error in-root of config map" errorList)
 
     let private configParamsValidationStep (optionValidationSteps: ConfigParamValidationStep list): MapValidationStep =
@@ -41,17 +39,21 @@ module MapValidator =
                     |> Seq.collect
                         ((function
                         | _, Group groupOptions -> configParamsValidation groupOptions
-                        | arrayName, Array arr -> arr 
-                                                    |> Array.mapi (fun index value -> ((sprintf "%s.[%d]" arrayName index)), value) 
-                                                    |> Array.toList 
-                                                    |> configParamsValidation
-                        | _, Node (nodeName, dict) -> dict 
-                                                    |> Seq.map (fun (paramName, value) -> ((sprintf "%s.%s" nodeName paramName)), value) 
-                                                    |> Seq.toList 
-                                                    |> configParamsValidation
+                        | arrayName, Array arr ->
+                            arr
+                            |> Array.mapi (fun index value -> ((sprintf "%s.[%d]" arrayName index)), value)
+                            |> Array.toList
+                            |> configParamsValidation
+                        | _, Node (nodeName, dict) ->
+                            dict
+                            |> Seq.map (fun (paramName, value) -> ((sprintf "%s.%s" nodeName paramName)), value)
+                            |> Seq.toList
+                            |> configParamsValidation
                         | _ -> []))
 
-                let innerErrors = configParams |> Seq.collect optionValidation
+                let innerErrors =
+                    configParams |> Seq.collect optionValidation
+
                 [ innerErrors; descendatErrors ]
                 |> Seq.concat
                 |> Seq.toList
@@ -60,13 +62,14 @@ module MapValidator =
             if List.isEmpty errorsList then Ok(ValidatedConfunMap configMap) else Error errorsList
 
     let validate configMap: MapValidationResult =
-        let optionConfigValidationSteps = [ ConfigParamsValidation.namesUniquenesInGroupValidationStep
-                                            ConfigParamsValidation.namesEmptinessInGroupValidationStep
-                                            ConfigParamsValidation.nodeNameEmptinessValidationStep
-                                            ConfigParamsValidation.namesUniquenesInNodeValidationStep
-                                            ConfigParamsValidation.namesEmptinessInNodeValidationStep
-                                            ConfigParamsValidation.nullStringValidationStep
-                                            ConfigParamsValidation.regexValidationStep ]
+        let optionConfigValidationSteps =
+            [ ConfigParamsValidation.namesUniquenesInGroupValidationStep
+              ConfigParamsValidation.namesEmptinessInGroupValidationStep
+              ConfigParamsValidation.nodeNameEmptinessValidationStep
+              ConfigParamsValidation.namesUniquenesInNodeValidationStep
+              ConfigParamsValidation.namesEmptinessInNodeValidationStep
+              ConfigParamsValidation.nullStringValidationStep
+              ConfigParamsValidation.regexValidationStep ]
 
         let errorResults =
             [ namesUniquenessValidationStep
@@ -77,4 +80,5 @@ module MapValidator =
                  >> (function
                  | Ok _ -> []
                  | Error errorList -> errorList))
+
         if List.isEmpty errorResults then Ok(ValidatedConfunMap configMap) else Error errorResults
