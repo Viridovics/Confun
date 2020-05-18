@@ -1,5 +1,8 @@
 ﻿namespace Confun.Core.Types
 
+open System.Diagnostics.CodeAnalysis
+
+[<ExcludeFromCodeCoverage>]
 type ConfunMap = Dict
 
 and Dict = ConfigParam list
@@ -36,7 +39,7 @@ type ConfigFile =
       DirectoryPath: string
       ParamsMap: ConfunMap }
 
-
+[<ExcludeFromCodeCoverage>]
 type ConfunError =
     | ValidationError of string
     | GenerationError of string

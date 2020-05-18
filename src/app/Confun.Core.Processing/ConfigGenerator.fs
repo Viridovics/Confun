@@ -6,12 +6,8 @@ open Confun.Core.Processing.Api
 open Confun.Core.Types
 
 module ConfigGenerator =
-    let printError error = sprintf "Validation error: '%A'" error
-
-    let printErrors (errors: ConfunError list) =
-        sprintf "Validation errors: '%A'" (Seq.toList errors)
-
     let generate (configMapGenerator: ConfigMapGenerator) (configFile: ValidatedConfigFile) =
+        Directory.CreateDirectory configFile.DirectoryPath |> ignore
         let configPath = Path.Combine(configFile.DirectoryPath, configFile.Name)
         try
             File.WriteAllText(configPath, (configMapGenerator configFile.ValidatedParamsMap))

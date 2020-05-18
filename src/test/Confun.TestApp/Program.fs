@@ -46,14 +46,14 @@ let main argv =
     let configValidationRes = ConfigValidator.validate config
     match configValidationRes with
     | Error error ->
-                    printf "%s" (ConfigGenerator.printErrors error)
+                    printf "%A" error
     | Ok validatedConfig ->
                     ConfigGenerator.generate (XmlGenerator.generator "ConfigRoot") validatedConfig |> printf "%A"
 
     let res = MapValidator.validate m
     match res with
     | Error error ->
-                    printf "%s" (ConfigGenerator.printErrors error)
+                    printf "%A" error
                     1
     | Ok validatedResult -> 
                     printf "%s" (JsonGenerator.generator validatedResult)

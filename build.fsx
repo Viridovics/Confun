@@ -43,8 +43,8 @@ let inline runTestWithCollectCoverage arg =
 
 
 let confunSlnPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, "Confun.sln")
-let unitTestsPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"src\test\Confun.UnitTests\Confun.UnitTests.fsproj")
-let testAppPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"src\test\Confun.TestApp\Confun.TestApp.fsproj")
+let unitTestsPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"src/test/Confun.UnitTests/Confun.UnitTests.fsproj")
+let testAppPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"src/test/Confun.TestApp/Confun.TestApp.fsproj")
 
 // Default target
 Target.create "Build" (fun _ -> DotNet.build compileWithoutArgs confunSlnPath)

@@ -8,6 +8,8 @@
     <Compile Include="UnitTests.fs" />
     <Compile Include="ConfigParamsValidationTests.fs" />
     <Compile Include="MapValidationTests.fs" />
+    <Compile Include="ConfigValidationTests.fs" />
+    <Compile Include="ConfigGenerationTests.fs" />
     <Compile Include="Generators/JsonGeneratorTests.fs" />
     <Compile Include="Generators/YamlGeneratorTests.fs" />
     <Compile Include="Generators/XmlGeneratorTests.fs" />

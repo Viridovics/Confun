@@ -1,7 +1,10 @@
 namespace Confun.Core.Processing.Api
 
+open System.Diagnostics.CodeAnalysis
+
 open Confun.Core.Types
 
+[<ExcludeFromCodeCoverage>]
 type ValidationResult<'TError> =
     | Valid
     | Invalid of 'TError
