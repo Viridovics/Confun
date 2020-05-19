@@ -61,24 +61,33 @@ module MapValidator =
             let errorsList = configParamsValidation configMap
             if List.isEmpty errorsList then Ok(ValidatedConfunMap configMap) else Error errorsList
 
-    let validate configMap: MapValidationResult =
-        let optionConfigValidationSteps =
-            [ ConfigParamsValidation.namesUniquenesInGroupValidationStep
-              ConfigParamsValidation.namesEmptinessInGroupValidationStep
-              ConfigParamsValidation.nodeNameEmptinessValidationStep
-              ConfigParamsValidation.namesUniquenesInNodeValidationStep
-              ConfigParamsValidation.namesEmptinessInNodeValidationStep
-              ConfigParamsValidation.nullStringValidationStep
-              ConfigParamsValidation.regexValidationStep ]
+    let private defaultParamConfigValidationSteps = [ ConfigParamsValidation.namesUniquenesInGroupValidationStep
+                                                      ConfigParamsValidation.namesEmptinessInGroupValidationStep
+                                                      ConfigParamsValidation.nodeNameEmptinessValidationStep
+                                                      ConfigParamsValidation.namesUniquenesInNodeValidationStep
+                                                      ConfigParamsValidation.namesEmptinessInNodeValidationStep
+                                                      ConfigParamsValidation.nullStringValidationStep
+                                                      ConfigParamsValidation.regexValidationStep ]
 
+    let private validateMap paramConfigValidationSteps mapValidationSteps configMap =
+        let allMapValidationSteps = [ namesUniquenessValidationStep
+                                      namesEmptinessValidationStep
+                                      (configParamsValidationStep paramConfigValidationSteps) ] @ mapValidationSteps
         let errorResults =
-            [ namesUniquenessValidationStep
-              namesEmptinessValidationStep
-              (configParamsValidationStep optionConfigValidationSteps) ]
-            |> List.collect
-                ((fun step -> step configMap)
-                 >> (function
-                 | Ok _ -> []
-                 | Error errorList -> errorList))
+           allMapValidationSteps
+           |> List.collect
+               ((fun step -> step configMap)
+                >> (function
+                | Ok _ -> []
+                | Error errorList -> errorList))
 
         if List.isEmpty errorResults then Ok(ValidatedConfunMap configMap) else Error errorResults
+
+    let validate configMap: MapValidationResult =
+        validateMap defaultParamConfigValidationSteps [] configMap
+
+    let validateWith extraValidation configMap: MapValidationResult =
+        match extraValidation with
+        | MapValidationSteps mapValidationSteps -> validateMap defaultParamConfigValidationSteps mapValidationSteps configMap
+        | ParamValidationSteps paramValidationSteps -> validateMap (defaultParamConfigValidationSteps @ paramValidationSteps) [] configMap
+        | ValidationSteps validationSteps -> validateMap (defaultParamConfigValidationSteps @ validationSteps.ParamSteps) validationSteps.MapSteps configMap

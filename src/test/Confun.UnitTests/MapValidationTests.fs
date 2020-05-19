@@ -4,6 +4,7 @@ open Xunit
 open FsUnit
 
 open Confun.Core.Processing
+open Confun.Core.Processing.Api
 open Confun.Core.Types
 
 module MapValidationTests =
@@ -15,6 +16,18 @@ module MapValidationTests =
 
     let private isValid configMap =
         let validationResult = configMap |> MapValidator.validate
+        match validationResult with
+        | Ok(ValidatedConfunMap validatedConfigMap) -> should equivalent configMap validatedConfigMap
+        | _ -> UnitTests.testFail (sprintf "validation result is not OK. Actual result %A" validationResult)
+
+    let private haveErrorsCountWith validationOptions errorsCount configMap =
+        let validationResult = configMap |> MapValidator.validateWith validationOptions
+        match validationResult with
+        | Error errorList -> errorList |> should haveLength errorsCount
+        | _ -> UnitTests.testFail (sprintf "validation result is not error. Actual result %A" validationResult)
+
+    let private isValidWith validationOptions configMap =
+        let validationResult = configMap |> MapValidator.validateWith validationOptions
         match validationResult with
         | Ok(ValidatedConfunMap validatedConfigMap) -> should equivalent configMap validatedConfigMap
         | _ -> UnitTests.testFail (sprintf "validation result is not OK. Actual result %A" validationResult)
@@ -157,3 +170,44 @@ module MapValidationTests =
                     "NameNormal", Str "42"
                     "RepeatingName", Port 90us ]) ]
         configMap |> haveErrorsCount 2
+
+    [<Fact>]
+    let ``Config with duplicate names in different node is valid by empty ValidationOptions``() =
+        let configMap =
+            [ "RepeatingName", Port 42us
+              "Node1", Node ("add", [ "RepeatingName", Port 42us ])
+              "Node2", Node ("add", [ "RepeatingName", Port 42us ])]
+        configMap |> isValidWith ValidationOptions.empty
+
+    let portMustBeLessThan50000: ConfigParamValidationStep = 
+        function
+        | _, Port port -> if port < 50000us then Valid else Invalid [ ValidationError "port is incorrect" ]
+        | _ -> Valid
+
+    let everyMapIsBad: MapValidationStep =
+        fun _ ->
+            Error( [ ValidationError "Map is bad!" ])
+
+    [<Fact>]
+    let ``Config is invalid by specific and custom param rules``() =
+        let configMap =
+            [ "RepeatingName", Port 50000us
+              "RepeatingName", Node ("add", [ "RepeatingName", Port 42us ])
+              "Node2", Node ("add", [ "RepeatingName", Port 42us ])]
+        configMap |> haveErrorsCountWith (ParamValidationSteps [portMustBeLessThan50000]) 2
+
+    [<Fact>]
+    let ``Config is invalid by specific map rule and default param rule``() =
+        let configMap =
+            [ "RepeatingName", Port 50000us
+              "RepeatingName", Node ("add", [ "RepeatingName", Port 42us ])
+              "Node2", Node ("add", [ "RepeatingName", Port 42us ])]
+        configMap |> haveErrorsCountWith (MapValidationSteps [everyMapIsBad]) 2
+
+    [<Fact>]
+    let ``Config is invalid by specific map rule and default with custom param rules``() =
+        let configMap =
+            [ "RepeatingName", Port 50000us
+              "RepeatingName", Node ("add", [ "RepeatingName", Port 42us ])
+              "Node2", Node ("add", [ "RepeatingName", Port 42us ])]
+        configMap |> haveErrorsCountWith (ValidationSteps { MapSteps = [everyMapIsBad]; ParamSteps = [portMustBeLessThan50000] }) 3
