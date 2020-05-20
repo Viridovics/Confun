@@ -53,6 +53,8 @@ Target.create "RunTestApp" (fun _ ->
     let result = DotNet.exec (compileWithProjectPathAndFsxWorkingDirectory testAppPath) "run" ""
     if (result.ExitCode <> 0) then raise (GenerationErrorException(sprintf "%A" result.Messages)))
 
+Target.create "Clean" (fun _ -> DotNet.exec compileWithoutArgs "clean" "" |> ignore)
+
 Target.create "Restore" (fun _ -> DotNet.restore compileWithoutArgs confunSlnPath)
 
 Target.create "RunTests" (fun _ ->
@@ -63,7 +65,8 @@ Target.create "OnlyTests" (fun _ ->
     DotNet.test runTestWithCollectCoverage unitTestsPath
 )
 
-"Restore" 
+"Clean"
+    ==> "Restore" 
     ==> "Build"
     ==> "RunTests"
 // start build
