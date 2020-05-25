@@ -2,7 +2,7 @@
 
 ## How to run
 
-> ...\> run .\build.ps1
+> ...\> run .\buildAndRun.ps1
 
 ##  Example motivation
 
