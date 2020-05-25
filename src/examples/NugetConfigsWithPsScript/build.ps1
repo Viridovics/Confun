@@ -6,6 +6,7 @@ If ($lastExitCode -ne "0") {
     exit
 }
 
+Write-Host
 Write-Host "Generating configs"
 dotnet run --project "src\NugetConfigsWithPsScript.ConfigGenerator\NugetConfigsWithPsScript.ConfigGenerator.fsproj"
 If ($lastExitCode -ne "0") {
@@ -13,6 +14,7 @@ If ($lastExitCode -ne "0") {
     exit
 }
 
+Write-Host
 Write-Host "Solution build"
 dotnet build
 
