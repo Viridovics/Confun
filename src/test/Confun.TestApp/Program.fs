@@ -8,6 +8,15 @@ open Confun.Generator.Xml
 
 let packageNode = Node.createNode2 "PackageReference" "Include" "Version"
 
+let configApp = [
+    "AppPort", Port 8080us
+    "DatabaseConnection", Group [
+        "Instance", Str "localhost:8080"
+        "User", Str "UserName"
+        "Pwd", Null // Fill in runtime or deployment
+    ]
+]
+
 let m:ConfunMap = [
             "IntValue", Int 100
             "PortArray", Array [|
