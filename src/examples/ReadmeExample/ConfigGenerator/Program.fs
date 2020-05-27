@@ -18,7 +18,7 @@ let configMap = [
 
 let config = {
     Name = "app.config.json"
-    DirectoryPath = ".\App\Configs"
+    DirectoryPath = "./App/Configs"
     ParamsMap = configMap 
 }
 

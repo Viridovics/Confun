@@ -39,7 +39,7 @@ let inline compileWithProjectPathAndFsxWorkingDirectory projectPath =
             >> DotNet.Options.withCustomParams (Some projectOption)
 
 let slnPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, "NugetConfigsWithFake.sln")
-let generatorPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"src\NugetConfigsWithFake.ConfigGenerator\NugetConfigsWithFake.ConfigGenerator.fsproj")
+let generatorPath = System.IO.Path.Combine(__SOURCE_DIRECTORY__, @"src/NugetConfigsWithFake.ConfigGenerator/NugetConfigsWithFake.ConfigGenerator.fsproj")
 
 // Default target
 Target.create "Build" (fun _ -> DotNet.build compileWithoutArgs slnPath)
