@@ -7,7 +7,7 @@ If ($lastExitCode -ne "0") {
 }
 Write-Host
 Write-Host "Generating configs"
-dotnet run --project "ConfigGenerator\ConfigGenerator.fsproj"
+dotnet run --project "./ConfigGenerator/ConfigGenerator.fsproj"
 If ($lastExitCode -ne "0") {
     Write-Error "Generating configs is failed"
     exit
@@ -26,8 +26,8 @@ If ($lastExitCode -ne "0") {
 Write-Host
 Write-Host "Run app"
 
-Push-Location -Path App\bin\Debug\netcoreapp3.1
-dotnet .\App.dll
+Push-Location -Path ./App/bin/Debug/netcoreapp3.1
+dotnet ./App.dll
 If ($lastExitCode -ne "0") {
     Write-Error "Run App was failed"
     Pop-Location

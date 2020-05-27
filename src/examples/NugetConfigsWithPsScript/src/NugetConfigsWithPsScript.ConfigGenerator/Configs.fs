@@ -8,7 +8,7 @@ open NugetPackages
 // 2. You can create helper function for ("ItemGroup", Array ...) in module NugetPackages
 let lib1NugetConfig = {
     Name = "Nuget.Lib1.props"
-    DirectoryPath = ".\src\NugetConfigsWithPsScript.Lib1"
+    DirectoryPath = "./src/NugetConfigsWithPsScript.Lib1"
     ParamsMap = [
         "ItemGroup", Array [|
             NLogPackage
@@ -19,7 +19,7 @@ let lib1NugetConfig = {
 
 let lib2NugetConfig = {
     Name = "Nuget.Lib2.props"
-    DirectoryPath = ".\src\NugetConfigsWithPsScript.Lib2"
+    DirectoryPath = "./src/NugetConfigsWithPsScript.Lib2"
     ParamsMap = [
         "ItemGroup", Array [|
             NLogPackage
@@ -29,7 +29,7 @@ let lib2NugetConfig = {
 
 let lib3NugetConfig = {
     Name = "Nuget.Lib3.props"
-    DirectoryPath = ".\src\NugetConfigsWithPsScript.Lib3"
+    DirectoryPath = "./src/NugetConfigsWithPsScript.Lib3"
     ParamsMap = [
         "ItemGroup", Array [|
             NLogPackage
@@ -40,7 +40,7 @@ let lib3NugetConfig = {
 
 let appNugetConfig = {
     Name = "Nuget.App.props"
-    DirectoryPath = ".\src\NugetConfigsWithPsScript.App"
+    DirectoryPath = "./src/NugetConfigsWithPsScript.App"
     ParamsMap = [
         "ItemGroup", Array [|
             NLogPackage

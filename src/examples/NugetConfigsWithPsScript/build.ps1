@@ -8,7 +8,7 @@ If ($lastExitCode -ne "0") {
 
 Write-Host
 Write-Host "Generating configs"
-dotnet run --project "src\NugetConfigsWithPsScript.ConfigGenerator\NugetConfigsWithPsScript.ConfigGenerator.fsproj"
+dotnet run --project "./src/NugetConfigsWithPsScript.ConfigGenerator/NugetConfigsWithPsScript.ConfigGenerator.fsproj"
 If ($lastExitCode -ne "0") {
     Write-Error "Generating configs is failed"
     exit
