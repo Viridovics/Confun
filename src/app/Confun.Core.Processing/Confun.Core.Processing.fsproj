@@ -15,5 +15,28 @@
   <ItemGroup>
     <ProjectReference Include="..\Confun.Core.Types\Confun.Core.Types.fsproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
 
+  <PropertyGroup>
+    <PackageId>Confun.Core</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.2-alpha</Version>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Viridovics</Authors>
+    <Description>
+      Confun is a system for describing, validating and generating config files usings F#. Generator implementation packages: Confun.Generator.Json, Confun.Generator.Xml, Confun.Generator.Yaml
+
+      Examples:
+      https://github.com/Viridovics/Confun/tree/master/src/examples
+    </Description>
+    <PackageProjectUrl>https://github.com/Viridovics/Confun</PackageProjectUrl>
+    <PackageTags></PackageTags>
+    <Copyright>Copyright ©2020 Viridovics</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <NeutralLanguage>en</NeutralLanguage>
+    <RepositoryUrl>https://github.com/Viridovics/Confun</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
 </Project>

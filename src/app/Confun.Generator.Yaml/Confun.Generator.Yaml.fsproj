@@ -14,4 +14,28 @@
     <PackageReference Include="YamlDotNet" Version="8.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>Confun.Generator.Yaml</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.2-alpha</Version>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Viridovics</Authors>
+    <Description>
+      Confun is a system for describing, validating and generating config files usings F#. This package is Yaml config generator.
+
+      Examples:
+      https://github.com/Viridovics/Confun/tree/master/src/examples
+    </Description>
+    <PackageProjectUrl>https://github.com/Viridovics/Confun</PackageProjectUrl>
+    <PackageTags></PackageTags>
+    <Copyright>Copyright ©2020 Viridovics</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <NeutralLanguage>en</NeutralLanguage>
+    <RepositoryUrl>https://github.com/Viridovics/Confun</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
 </Project>
